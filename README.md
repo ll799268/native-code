@@ -13,4 +13,5 @@ yarn dev
 ### 题目清单
 ```
   1、手写一个深度克隆
+  2、实现call、bind、apply
 ```
