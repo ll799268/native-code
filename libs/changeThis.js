@@ -1,6 +1,6 @@
 Function.prototype.myCall = function (ctx) {
   ctx = ctx ? Object(ctx) : globalThis
-  ctx.fn = this
+  ctx.fn = this // this 临时挂载方法上
 
   var args = []
 
