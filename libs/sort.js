@@ -53,12 +53,14 @@ function insertSort(arr) {
 }
 
 /**
- * 快速排序（）
+ * 快速排序（选择基准值 mid，循环原数组，小于基准值放左边数组，大于放右边数组，然后 concat 组合，最后依靠递归完成排序）
  * @param {*} arr 
  */
 function quickSort(arr) {
   if (arr.length <= 1) return arr
-  var left = [], right = [], mid = arr.splice(0, 1)
+  var left = [],
+    right = [],
+    mid = arr.splice(0, 1)
   for (var i = 0; i < arr.length; i++) {
     if (arr[i] < mid) {
       left.push(arr[i])
