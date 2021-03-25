@@ -22,5 +22,5 @@ class CreateTeacher {
   }
 }
 
-let LL = new CreateTeacher({ name: 'lili', age: 24 }).setAge().setName().twoChange(() => 50)
-console.log(LL);
+// let LL = new CreateTeacher({ name: 'lili', age: 24 }).setAge().setName().twoChange(() => 50)
+// console.log(LL);
