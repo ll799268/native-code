@@ -204,9 +204,45 @@
     3）include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind 。
 ```
 
-### 6、数组的双向绑定
+## react
+
+### 1、useState hook
 ```
-  单独修改数组值，不会更改视图。使用 this.this.$set(object, key, value)
+  * 让函数组件也可以有state状态，并进行状态数据的读写操作
+  * 语法 const [data, setData] = useState(defaultVal)
+  * useState（）说明
+      参数：第一次初始化指定的值在内部做缓存
+      返回值：包含2个元素的数组，第一个为内部当前状态值，第二个为更新状态值的函数
+  * setData（）两种写法
+    setData（newValue）：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
+    setData（value => newValue）：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
+```
+
+### 2、useEffect hook
+```
+  * 可以让你在函数组件中执行副作用（用于模拟生命周期的钩子）
+  * react中的副作用操作：
+      发送请求数据的获取
+      设置订阅、启动定时器
+      手动更改真实DOM
+  * 语法和说明：
+    useEffect(() => {
+      在此可操作性任何带副作用的操作
+      return () => { 在组件卸载前执行
+        在此做一些收尾性的工作，取消订阅、清定时器
+      }
+    }, [stateValue]) 如果指定是[]，回调函数只会在第一次render后执行
+  * 可以把useEffect Hook 看做是如下三个函数的结合
+    componentDidMount()
+    componentDidUpdate()
+    componentWillUnmount()
+```
+
+### 3、useRef hook
+```
+  * 可以在函数组件中存储、查找组件内的标签或任意其他类型
+  * 语法 const refDom = useRef() <input ref={ refDom } /> 
+  * 使用 保存标签对象，功能和React.createRef()一样
 ```
 
 ## 移动端
@@ -311,21 +347,4 @@
   * res.send()  返回多种形式数据
   * res.sendFile()  返回文件
   * res.sendStatus()  返回状态
-```
-
-### 6、Redis的主要特点是什么
-```
-  * Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载和使用
-  * Redis不仅支持简单的键-值类型的数据，同时还提供list、set、zset、hash等数据结构的存储
-  * Redis支持数据的备份，即主 - 从模式的数据备份
-```
-
-### 7、Nginx和 Apache有什么区别
-```
-  nginx是轻量级的，同样的Web服务在nginx中会占用更少的内存和资源。Nginx抗并发，处理请求的方式是异步非阻塞的，负载能力比 Apache高很多
-  而Apache则是阻塞型的。
-  在高并发下 Nginx能保持低资源、低消耗、高性能，并且处理静态文件比 Apache好。 
-  Nginx的设计高度模块化，编写模块相对简单，配置简洁。作为负載均衡服务器，支持7层负载均衡，是一个反向代理服务器。
-  社区活跃，各种高性能模块出品迅速。Apache的 rewrite 比 Nginx强大，模块丰富。Apache发展得更为成熟，Bug很少,更加稳定。
-  Apache对PHP的支持比较简单， Nginx需要配合其他后端使用。Apache处理动态请求有优势，拥有丰富的特性、成熟的技术和开发社区。
 ```
