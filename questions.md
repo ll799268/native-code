@@ -25,7 +25,7 @@
 ```
 
 ### 3、判断引用数据类型方法（内置PAI、对象的toString方法、原型链）
-```
+``` js
   * xx instanceof Type
   * Object.prototype.toString.call(xx) === '[object Type]'
   * xx.__proto__ === Type.prototype
@@ -42,7 +42,7 @@
 ```
 
 ### 5、http 状态码
-```
+``` js
   * 100 Continue表示继续，一般在发送post请求时，已发送了 HTTP header之后，服务器端将返回此信息，表示确认，之后发送具体参数信息。
   * 200 OK表示正常返回信息。
   * 201 Created表示请求成功并且服务器创建了新的资源。
@@ -75,37 +75,7 @@
   * 建造者模式（建造者模式主要用于“分步骤构建一个复杂的对象”，在这其中“分步骤”是一个稳定的算法，而复杂对象的各个部分则经常变化，其优点是：建造者模式的“加工工艺”是暴露的，这样使得建造者模式更加灵活，并且建造者模式解耦了组装过程和创建具体部件，使得我们不用去关心每个部件是如何组装的。）
 ```
 
-### 7、方法重载（ Overload）与方法重写（ Override）的区别
-```
-  方法重载属于编译时的多态，根据传递的参数不同，执行不同的业务逻辑，得到不同的结果。
-  方法重写属于运行时的多态，子类原型指向父类原型，子类重写父类的方法，在调用子类方法的时候使用子类的方法，从而重写父类中定义的方法。
-```
-
-### 8、防止程序奔溃
-```
-  * try-catch-finally。
-  * EventEmitter/Stream error事件处理。
-  * domain统一控制。
-  * jshint静态检查。
-  * jasmine/mocha单元测试。
-```
-
-### 9、网站安全
-```
-  * XSS 攻击指的是跨站脚本攻击，是一种代码注入攻击。攻击者通过在网站注入恶意脚本，使之在用户的浏览器上运行，从而盗取用户的信息如 cookie 等
-    预防：
-    1）存入数据库的数据都进行的转义处理
-    2）对服务端输出进行转义
-    3）使用HttpOnly Cookie：将重要的cookie标记为httponly，这样就无法使用js代码获取cookie。
-  * CSRF 攻击指的是跨站请求伪造攻击，攻击者诱导用户进入一个第三方网站，然后该网站向被攻击网站发送跨站请求。
-   预防：
-    1）第一种是同源检测的方法，服务器根据 http 请求头中 origin 或者 referer 信息来判断请求是否为允许访问的站点，从而对请求进行过滤。当 origin 或者 referer 信息都不存在的时候，直接阻止。这种方式的缺点是有些情况下 referer 可以被伪造。还有就是我们这种方法同时把搜索引擎的链接也给屏蔽了，所以一般网站会允许搜索引擎的页面请求，但是相应的页面请求这种请求方式也可能被攻击者给利用。
-    2）第二种方法是使用 CSRF Token 来进行验证，服务器向用户返回一个随机数 Token ，当网站再次发起请求时，在请求参数中加入服务器端返回的 token ，然后服务器对这个 token 进行验证。这种方法解决了使用 cookie 单一验证方式时，可能会被冒用的问题，但是这种方法存在一个缺点就是，我们需要给网站中的所有请求都添加上这个 token，操作比较繁琐。还有一个问题是一般不会只有一台网站服务器，如果我们的请求经过负载平衡转移到了其他的服务器，但是这个服务器的 session 中没有保留这个 token 的话，就没有办法验证了。这种情况我们可以通过改变 token 的构建方式来解决。
-    3）第三种方式使用双重 Cookie 验证的办法，服务器在用户访问网站页面时，向请求域名注入一个Cookie，内容为随机字符串，然后当用户再次向服务器发送请求的时候，从 cookie 中取出这个字符串，添加到 URL 参数中，然后服务器通过对 cookie 中的数据和参数中的数据进行比较，来进行验证。使用这种方式是利用了攻击者只能利用 cookie，但是不能访问获取 cookie 的特点。并且这种方法比 CSRF Token 的方法更加方便，并且不涉及到分布式访问的问题。这种方法的缺点是如果网站存在 XSS 漏洞的，那么这种方式会失效。同时这种方式不能做到子域名的隔离。
-    4）第四种方式是使用在设置 cookie 属性的时候设置 Samesite ，限制 cookie 不能作为被第三方使用，从而可以避免被攻击者利用。Samesite 一共有两种模式，一种是严格模式，在严格模式下 cookie 在任何情况下都不可能作为第三方 Cookie 使用，在宽松模式下，cookie 可以被请求是 GET 请求，且会发生页面跳转的请求所使用。
-```
-
-### 10、栈和堆的区别
+### 7、栈和堆的区别
 ```
   * 栈（stack）区由编译器自动分配和释放，存放函数的参数值、局部变量的值等。
   堆（heap）区一般由程序员分配和释放，若程序员不释放，程序结束时可能由OS回收。
@@ -115,7 +85,7 @@
 
 ```
 
-### 11、输入 url 发生了什么
+### 8、输入 url 发生了什么
 ```
   1、DNS域名解析
     客户端收到你输入的域名地址后，它首先去找本地的hosts文件，检查在该文件中是否有相应的域名、IP对应关系，如果有，则向其IP地址发送请求
@@ -162,7 +132,7 @@
 ```
 
 ### 3、vue中的directive
-```
+``` js
   生命周期：
   bind函数：只调用一次，指令第一次绑定在元素上调用，即初始化调用一次，
   inserted函数：并绑定元素插入父级元素（即new vue中el绑定的元素）时调用（此时父级元素不一定转化为了dom）
@@ -184,7 +154,7 @@
 ```
 
 ### 4、vue-router
-```
+``` js
   全局守卫
   1、beforeEach(to, from, next)
   1、afterEach(to, from, next)
@@ -195,7 +165,7 @@
 ```
 
 ### 5、keep-alive
-```
+``` 
   第一次进入，钩子的触发顺序:created-> mounted-> activated
   当再次进入（前进或者后退）时，只触发activated事件挂载的方法等
   只执行一次的放在 mounted 中；组件每次进去执行的方法放在 activated 中
@@ -206,62 +176,59 @@
 
 ## react
 
-### 1、useState hook
-```
-  * 让函数组件也可以有state状态，并进行状态数据的读写操作
-  * 语法 const [data, setData] = useState(defaultVal)
-  * useState（）说明
-      参数：第一次初始化指定的值在内部做缓存
-      返回值：包含2个元素的数组，第一个为内部当前状态值，第二个为更新状态值的函数
-  * setData（）两种写法
-    setData（newValue）：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
-    setData（value => newValue）：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
-```
+### 1、hook钩子函数
+``` js
+  1、useState hook
+    * 让函数组件也可以有state状态，并进行状态数据的读写操作
+    * 语法 const [data, setData] = useState(defaultVal)
+    * useState（）说明
+        参数：第一次初始化指定的值在内部做缓存
+        返回值：包含2个元素的数组，第一个为内部当前状态值，第二个为更新状态值的函数
+    * setData（）两种写法
+      setData（newValue）：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
+      setData（value => newValue）：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
 
-### 2、useEffect hook
-```
-  * 可以让你在函数组件中执行副作用（用于模拟生命周期的钩子）
-  * react中的副作用操作：
-      发送请求数据的获取
-      设置订阅、启动定时器
-      手动更改真实DOM
-  * 语法和说明：
-    useEffect(() => {
-      在此可操作性任何带副作用的操作
-      return () => { 在组件卸载前执行
-        在此做一些收尾性的工作，取消订阅、清定时器
-      }
-    }, [stateValue]) 如果指定是[]，回调函数只会在第一次render后执行
-  * 可以把useEffect Hook 看做是如下三个函数的结合
-    componentDidMount()
-    componentDidUpdate()
-    componentWillUnmount()
-```
+  2、useEffect hook
+    * 可以让你在函数组件中执行副作用（用于模拟生命周期的钩子）
+    * react中的副作用操作：
+        发送请求数据的获取
+        设置订阅、启动定时器
+        手动更改真实DOM
+    * 语法和说明：
+      useEffect(() => {
+        在此可操作性任何带副作用的操作
+        return () => { 在组件卸载前执行
+          在此做一些收尾性的工作，取消订阅、清定时器
+        }
+      }, [stateValue]) 如果指定是[]，回调函数只会在第一次render后执行
+    * 可以把useEffect Hook 看做是如下三个函数的结合
+      componentDidMount()
+      componentDidUpdate()
+      componentWillUnmount()
 
-### 3、useRef hook
-```
-  * 可以在函数组件中存储、查找组件内的标签或任意其他类型
-  * 语法 const refDom = useRef() <input ref={ refDom } /> 
-  * 使用 保存标签对象，功能和React.createRef()一样
+  3、useRef hook
+    * 可以在函数组件中存储、查找组件内的标签或任意其他类型
+    * 语法 const refDom = useRef() <input ref={ refDom } /> 
+    * 使用 保存标签对象，功能和React.createRef()一样
 ```
 
 ## 移动端
 
 ### 1、点击穿透
-```
+``` js
   * 蒙层出现时：
     1）底部任然可以滚动
     2）点击会触发蒙层下面的元素监听事件
   * 解决方案
     1）全部使用`touch`事件
-    2）添加 pointer-events:none样式
+    2）添加 pointer-events: none样式
     3）轻触〔tap）后延迟350ms再隐藏蒙层 蒙层消失会变慢
 ```
 
 ## webpack
 
 ### 1、常用的工具或者插件
-```
+``` js
   *  HtmlWebpackPlugin：依据一个HTML模板，生成HTML文件，并将打包后的资源文件自动引入。
   *  commonsChunkPlugin：抽取公共模块，减小包占用的内存空间，例如vue的源码、 jQuery的源码等。
   *  css-loader：解析CSS文件依赖，在 JavaScript中通过 require方式引入CSS文件。
@@ -282,69 +249,16 @@
 ```
 
 ### 3、图片处理常见的加载器有几种
-```
+``` js
   * file-loader，默认情况下会根据图片生成对应的MD5散列的文件格式。
   * url-loader，它类似于file-loader，但是url-loader可以根据自身文件的大小，来决定是否把转化为base64格式的DataUrl单独作为文件，也可以自定义对应的散列文件名。
   * image-webpack-loader，提供压缩图片的功能。
 ```
 
 ### 4、压缩文件
-```
+``` js
   在 webpack 可以使用如下插件进行压缩：
     JavaScript: UglifyPlugin
     CSS: MiniCssExtractPlugin
     HTML: HtmlWebpackPlugin
-```
-
-## node.js
-
-### 1、fs.watch和 fs.watchFile有什么区别
-```
-  二者主要用来监听文件变动，
-  fs.watch利用操作系统原生机制来监听，可能不适用网络文件系统；
-  fs. watchFile则定期检查文件状态变更，适用于网络文件系统，但是与fs.watch相比有些慢，因为它不采用实时机制。
-```
-
-### 2、exec、 execFile、 spawn和fork都是做什么用的
-```
-  exec 可以用操作系统原生的方式执行各种命令，如管道 cat ab.txt |  grep hello。
-  execFile 用于执行一个文件。
-  spawn 负责在流式和操作系统之间进行交互。
-  fork 负责在两个 Node. js程序（ JavaScript）之间进行交互。
-```
-
-### 3、express项目的目录大致是什么结构的？
-```
-  首先，执行安装 express的指令：npm install express-generator-g。
-  然后，通过 express指令创建项目：express icketang。
-
-  创建的项目目录结构如下：
-  ./app.js  应用核心配置文件（入口文件）
-  ./bin  存放启动项目的脚本文件
-  ./package.json  存储项目的信息及模块依赖
-  ./public 静态文件（css、js、img等）
-  ./routes 路由文件（MVC中的 contro1ler）
-  ./views 页面文件（jade模板）
-```
-
-### 4、express常用函数有哪些
-```
-  * express.Router 路由组件
-  * app.get 路由定向
-  * app.configure 配置
-  * app.set 设定参数
-  * app.use 使用中间件
-```
-
-### 5、express response有哪些常用方法
-```
-  * res.download()，弹出文件下载
-  * res.end() 结束响应
-  * res.json()  返回json
-  * res.jsonp() 返回 jsonp
-  * res.redirect()  重定向请求
-  * res.render()  渲染模板
-  * res.send()  返回多种形式数据
-  * res.sendFile()  返回文件
-  * res.sendStatus()  返回状态
 ```
