@@ -2,29 +2,7 @@
 
 ## native js
 
-### 1、html重要的三个生命周期
-```
-  * DOMContentLoaded （DOM 加载完毕，所以 JS 可以访问所有 DOM 节点，初始化界面，由 document 对象触发）
-  浏览器已经完全加载了 HTML，DOM 树已经构建完毕，但是像是 <img> 和样式表等外部资源可能并没有下载完毕
-
-  * load（附加资源已经加载完毕，可以在此事件触发时获得图像的大小（如果没有被在 HTML/CSS 中指定）
-  浏览器已经加载了所有的资源（图像，样式表等）
-
-  * beforeunload （确认是否要离开当前页面）
-  当用户即将离开当前页面（刷新或关闭）时触发。正要去服务器读取新的页面时调用，此时还没开始读取
-
-  * unload（删除本地数据localstorage等）
-  在用户离开页面后触发。从服务器上读到了需要加载的新的页面，在即将替换掉当前页面时调用
-```
-
-### 2、document.readyState 表示页面的加载状态
-```
-  * loading 加载 document仍在加载。
-  * interactive 互动 文档已经完成加载，文档已被解析，但是诸如图像，样式表和框架之类的子资源仍在加载。
-  * complete 完成 文档和所有子资源已完成加载。 load 事件即将被触发。
-```
-
-### 3、判断引用数据类型方法（内置PAI、对象的toString方法、原型链）
+### 1、判断引用数据类型方法（内置PAI、对象的toString方法、原型链）
 ``` js
   * xx instanceof Type
   * Object.prototype.toString.call(xx) === '[object Type]'
@@ -32,7 +10,7 @@
   * xx.constructor === Type
 ```
 
-### 4、闭包
+### 2、闭包
 ```
   概念：
     函数在执行的时候会放到一个执行栈上执行，当函数执行完毕之后会在执行栈上移除
@@ -41,8 +19,8 @@
   缺点：内存消耗很大，容易导致内存泄漏
 ```
 
-### 5、http 状态码
-``` js
+### 3、http 状态码
+```
   * 100 Continue表示继续，一般在发送post请求时，已发送了 HTTP header之后，服务器端将返回此信息，表示确认，之后发送具体参数信息。
   * 200 OK表示正常返回信息。
   * 201 Created表示请求成功并且服务器创建了新的资源。
@@ -59,7 +37,7 @@
   * 503 Service Unavailable表示服务器端暂时无法处理请求（可能是过载或维护）。
 ```
 
-### 6、设计模式
+### 4、设计模式
 ```
   创建型模式(5)，工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式
   结构型模式(7)，适配器模式、装饰器模式、代理模式、外观模式桥接模式、组合模式、享元模式
@@ -75,7 +53,7 @@
   * 建造者模式（建造者模式主要用于“分步骤构建一个复杂的对象”，在这其中“分步骤”是一个稳定的算法，而复杂对象的各个部分则经常变化，其优点是：建造者模式的“加工工艺”是暴露的，这样使得建造者模式更加灵活，并且建造者模式解耦了组装过程和创建具体部件，使得我们不用去关心每个部件是如何组装的。）
 ```
 
-### 7、栈和堆的区别
+### 5、栈和堆的区别
 ```
   * 栈（stack）区由编译器自动分配和释放，存放函数的参数值、局部变量的值等。
   堆（heap）区一般由程序员分配和释放，若程序员不释放，程序结束时可能由OS回收。
@@ -85,7 +63,7 @@
 
 ```
 
-### 8、输入 url 发生了什么
+### 6、输入 url 发生了什么
 ```
   1、DNS域名解析
     客户端收到你输入的域名地址后，它首先去找本地的hosts文件，检查在该文件中是否有相应的域名、IP对应关系，如果有，则向其IP地址发送请求
@@ -100,7 +78,7 @@
   3、发送HTTP请求
   4、服务器处理请求
   5、返回响应结果
-  6、关闭TCP连接（四次握手）
+  6、关闭TCP连接（四次挥手）
   7、浏览器解析HTML
     浏览器通过解析HTML，生成DOM树，解析CSS，生成CSSOM树，然后通过DOM树和CSSPOM树生成渲染树。渲染树与DOM树不同，渲染树中并没有head、display为none等不必显示的节点。
   8、浏览器布局渲染
@@ -110,7 +88,7 @@
     reflow：意味着元素的几何尺寸变了，需要重新计算渲染树。
 ```
 
-### 9、宏任务、微任务
+### 7、宏任务、微任务
 ```
   1、宏任务：宏任务可以被理解为每次"执行栈"中所执行的代码，而浏览器会在每次宏任务执行结束后，在下一个宏任务执行开始前，对页面进行渲染，而宏任务包括：
     script(整体代码)
@@ -158,7 +136,7 @@
 ```
 
 ### 3、vue中的directive
-``` js
+```
   生命周期：
   bind函数：只调用一次，指令第一次绑定在元素上调用，即初始化调用一次，
   inserted函数：并绑定元素插入父级元素（即new vue中el绑定的元素）时调用（此时父级元素不一定转化为了dom）
@@ -192,7 +170,7 @@
 
 ### 5、keep-alive
 ``` 
-  第一次进入，钩子的触发顺序:created-> mounted-> activated
+  第一次进入，钩子的触发顺序: created-> mounted-> activated
   当再次进入（前进或者后退）时，只触发activated事件挂载的方法等
   只执行一次的放在 mounted 中；组件每次进去执行的方法放在 activated 中
     1）include - 字符串或正则表达式，只有名称匹配的组件会被缓存
@@ -200,10 +178,28 @@
     3）include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
 ```
 
+### 6、vuex
+```
+  1、概念
+    vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
+  2、核心概念
+    * 五大属性：state, getter, mutation, action, module
+      state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
+      getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
+      mutation: 更改 state 中的唯一方法
+      action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
+      module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
+  3、流程
+      dispath    commit
+  action => mutation => state
+  4、持久化工具
+    vuex-persistedstate
+```
+
 ## react
 
 ### 1、hook钩子函数
-``` js
+```
   1、useState hook
     * 让函数组件也可以有state状态，并进行状态数据的读写操作
     * 语法 const [data, setData] = useState(defaultVal)
@@ -240,55 +236,21 @@
 
 ## 移动端
 
-### 1、点击穿透
-``` js
-  * 蒙层出现时：
-    1）底部任然可以滚动
-    2）点击会触发蒙层下面的元素监听事件
-  * 解决方案
-    1）全部使用`touch`事件
-    2）添加 pointer-events: none样式
-    3）轻触〔tap）后延迟350ms再隐藏蒙层 蒙层消失会变慢
-```
-
 ## webpack
 
-### 1、常用的工具或者插件
-``` js
-  *  HtmlWebpackPlugin：依据一个HTML模板，生成HTML文件，并将打包后的资源文件自动引入。
-  *  commonsChunkPlugin：抽取公共模块，减小包占用的内存空间，例如vue的源码、 jQuery的源码等。
-  *  css-loader：解析CSS文件依赖，在 JavaScript中通过 require方式引入CSS文件。
-  *  style-loader.：通过 style标签引入CSS。
-  *  extract-text-webpack- plugin：将样式抽取成单独的文件。
-  *  url-loader：实现图片文字等资源的打包，limit选项定义大小限制，如果小于该限制，则打包成base64编码格式；如果大于该限制，就使用file-loader去打包成图片。
-  *  hostess：实现浏览器兼容。
-  *  babel：将 JavaScript未来版本（ EMAScript6、 EMAScript2016等）转换成当前浏览器支持的版本。
-  *  hot module replacement：修改代码后，自动刷新、实时预览修改后的效果
-  *  ugliifyJsPlugin：压缩 JavaScript代码。
-```
-
-### 2、loader和plugins 区别
+### 1、loader和plugins 区别
 ```
   它们是两个完全不同的东西。loader负责处理源文件，如CSS、jsx文件，一次处理一个文件。而 plugins并不直接操作单个文件，它直接对整个构建过程起作用。
   loader 文件、编译转换工具
   plugins webpack的监听器，接受webpack下发的消息通知下发
 ```
 
-### 3、图片处理常见的加载器有几种
-``` js
+### 2、图片处理常见的加载器有几种
+```
   * file-loader，默认情况下会根据图片生成对应的MD5散列的文件格式。
   * url-loader，它类似于file-loader，但是url-loader可以根据自身文件的大小，来决定是否把转化为base64格式的DataUrl单独作为文件，也可以自定义对应的散列文件名。
   * image-webpack-loader，提供压缩图片的功能。
 ```
-
-### 4、压缩文件
-``` js
-  在 webpack 可以使用如下插件进行压缩：
-    JavaScript: UglifyPlugin
-    CSS: MiniCssExtractPlugin
-    HTML: HtmlWebpackPlugin
-```
-
 
 ## 库
 ```
