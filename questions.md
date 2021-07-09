@@ -157,18 +157,7 @@
   d、oldVnode：上一个vnode，只在update和componentUpdated钩子函数中有效
 ```
 
-### 4、vue-router
-``` js
-  全局守卫
-  1、beforeEach(to, from, next)
-  1、afterEach(to, from, next)
-  局部守卫
-  1、beforeRouteEnter(to, from, next)
-  1、beforeRouteUpdate(to, from, next)
-  1、beforeRouteLeave(to, from, next)
-```
-
-### 5、keep-alive
+### 4、keep-alive
 ``` 
   第一次进入，钩子的触发顺序: created-> mounted-> activated
   当再次进入（前进或者后退）时，只触发activated事件挂载的方法等
@@ -176,6 +165,27 @@
     1）include - 字符串或正则表达式，只有名称匹配的组件会被缓存
     2）exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
     3）include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
+```
+
+### 5、vue-router
+```
+  1、路由守卫钩子
+    全局守卫
+      * beforeEach(to, from, next)
+      * afterEach(to, from, next)
+    局部守卫
+      * beforeRouteEnter(to, from, next)
+      * beforeRouteUpdate(to, from, next)
+      * beforeRouteLeave(to, from, next)
+  2、路由原理
+    hash模式（hashchange）
+      url 改变的时候 会触发 hashchange 事件
+    history模式（popstate）
+      通过浏览器前进后退改变 URL 时会触发 popstate 事件
+      通过pushState、replaceState、<a>标签改变 URL 不会触发 popstate 事件。
+      好在我们可以拦截 pushState、replaceState的调用和<a>标签的点击事件来检测 URL 变化
+      通过js 调用history的back，go，forward方法课触发该事件
+
 ```
 
 ### 6、vuex
