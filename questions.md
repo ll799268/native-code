@@ -2,7 +2,7 @@
 
 ## native js
 
-### 1、判断引用数据类型方法（内置PAI、对象的toString方法、原型链）
+### 1、判断引用数据类型方法（内置API、对象的toString方法、原型）
 ``` js
   * xx instanceof Type
   * Object.prototype.toString.call(xx) === '[object Type]'

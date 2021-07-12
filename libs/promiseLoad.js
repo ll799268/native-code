@@ -1,5 +1,10 @@
 var errorSrc = '/images/sort/bubbleSort.gif'
 
+/**
+ * promise 返回加载图片
+ * @param {*} url 
+ * @returns 
+ */
 function loadImage(url) {
   var image = new Image()
   return new Promise((resolve, reject) => {
