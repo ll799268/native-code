@@ -1,3 +1,7 @@
+/**
+ * 瀑布流布局
+ */
+
 class WaterfallFlow {
   constructor() {
     this.records = [
