@@ -242,14 +242,6 @@
   * 服务端渲染 SSR 或者预加载
 ```
 
-### 10、父子组件生命周期执行顺序
-```js
-  1、挂载阶段
-    beforeCreate(父) -> created(父) -> beforeMount(父) -> beforeCreate(子) -> created(子) -> beforeMount(子) -> mounted(子) -> mounted(父)
-  2、子组件更新阶段
-    beforeUpdate(父) -> beforeUpdate(子) -> updated(子) -> updated(父)
-```
-
 ### 10、computed 和 watch 的区别和运用的场景
 ```
   区别：
@@ -259,6 +251,26 @@
     computed 当我们需要进行数值计算，并且依赖于其他数据时，应该使用computed 因为可以利用缓存机制，避免每次获取值时，都需要重新计算
     watch 当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它
       使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
+```
+
+### 11、父子组件生命周期执行顺序
+```js
+  1、挂载阶段
+    beforeCreate(父) -> created(父) -> beforeMount(父) -> beforeCreate(子) -> created(子) -> beforeMount(子) -> mounted(子) -> mounted(父)
+  2、子组件更新阶段
+    beforeUpdate(父) -> beforeUpdate(子) -> updated(子) -> updated(父)
+```
+
+### 12、生命周期
+```
+  beforeCreate: 
+    创建实例（vm）
+  created: 
+    实例完成 observer(数据观测) 和 property（传入的prop数据） 和方法的运算
+  beforeMount:  
+    在挂载开始之前被调用 相关的 render 函数首次被调用
+  mounted: 
+
 ```
 
 ## react
