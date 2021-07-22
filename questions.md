@@ -263,14 +263,27 @@
 
 ### 12、生命周期
 ```
-  beforeCreate: 
+  beforeCreate:
     创建实例（vm）
-  created: 
+  created:
     实例完成 observer(数据观测) 和 property（传入的prop数据） 和方法的运算
-  beforeMount:  
+  beforeMount:
     在挂载开始之前被调用 相关的 render 函数首次被调用
-  mounted: 
-
+  mounted:
+    实例被挂载后调用，这时的 el 被创建的 vm.$el 替换了。如果根实例挂载到了一个文档内的元素上，被调用的 vm.$el 也是在文档内
+  beforeUpdate:
+    数据更新时调用，发生在虚拟 DOM 打补丁之前，这里适合在更新之前访问现有的 DOM 比如手动移除已添加的事件监听
+  updated:
+    由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子
+    当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。
+  active:
+    被 keep-alive 缓存的组件激活时调用(该钩子在服务器端渲染期间不被调用)
+  deactivated: 
+    被 keep-alive 缓存的组件停用时调用(该钩子在服务器端渲染期间不被调用)
+  beforedDestroy:
+    实例销毁之前调用。在这一步，实例仍然完全可用(该钩子在服务器端渲染期间不被调用)
+  destroyed:
+    实例销毁之后调用。该钩子被调用后，对应的 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁
 ```
 
 ## react
