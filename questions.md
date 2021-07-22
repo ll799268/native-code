@@ -228,7 +228,7 @@
   在修改数据之后立即使用这个方法，获取更新后的 DOM
 ```
 
-### 8、Vue 项目的优化（代码层面的优化）
+### 9、Vue 项目的优化（代码层面的优化）
 ```
   * v-if 和 v-show 区分使用场景
   * computed 和 watch 区分使用场景
@@ -240,6 +240,14 @@
   * 第三方插件按需加载
   * 优化无限列表性能
   * 服务端渲染 SSR 或者预加载
+```
+
+### 10、父子组件生命周期执行顺序
+```js
+  1、挂载阶段
+    beforeCreate(父) -> created(父) -> beforeMount(父) -> beforeCreate(子) -> created(子) -> beforeMount(子) -> mounted(子) -> mounted(父)
+  2、子组件更新阶段
+    beforeUpdate(父) -> beforeUpdate(子) -> updated(子) -> updated(父)
 ```
 
 ### 10、computed 和 watch 的区别和运用的场景
