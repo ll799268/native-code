@@ -262,46 +262,69 @@
 ```
 
 ### 12、生命周期
+```js
+  `beforeCreate`:
+    // 创建实例（vm）
+    initLifecycle(vm) // 初始化组件生命周期标志位
+    initEvents(vm) // 初始化事件监听
+    initRender(vm) // 初始化渲染方法
+    callHook(vm, 'beforeCreate')
+    // 初始化依赖注入内容，在初始化data、props之前
+    initInjections(vm) // resolve injections before data/props
+    initState(vm) // 初始化props、data、method、watch、methods
+    initProvide(vm) // resolve provide after data/props
+    callHook(vm, 'created')
+  `created`:
+    // 实例完成 observer(数据观测) 和 property（传入的prop数据） 和方法的运算
+  `beforeMount`:
+    // 在挂载开始之前被调用 相关的 render 函数首次被调用
+  `mounted`:
+    // 实例被挂载后调用，这时的 el 被创建的 vm.$el 替换了。如果根实例挂载到了一个文档内的元素上，被调用的 vm.$el 也是在文档内
+  `beforeUpdate`:
+    // 数据更新时调用，发生在虚拟 DOM 打补丁之前，这里适合在更新之前访问现有的 DOM 比如手动移除已添加的事件监听
+  `updated`:
+    // 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子
+    // 当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。
+  `active`:
+    // 被 keep-alive 缓存的组件激活时调用(该钩子在服务器端渲染期间不被调用)
+  `deactivated`: 
+    // 被 keep-alive 缓存的组件停用时调用(该钩子在服务器端渲染期间不被调用)
+  `beforedDestroy`:
+    // 实例销毁之前调用。在这一步，实例仍然完全可用(该钩子在服务器端渲染期间不被调用)
+  `destroyed`:
+    // 实例销毁之后调用。该钩子被调用后，对应的 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁
 ```
-  beforeCreate:
-    创建实例（vm）
-  created:
-    实例完成 observer(数据观测) 和 property（传入的prop数据） 和方法的运算
-  beforeMount:
-    在挂载开始之前被调用 相关的 render 函数首次被调用
-  mounted:
-    实例被挂载后调用，这时的 el 被创建的 vm.$el 替换了。如果根实例挂载到了一个文档内的元素上，被调用的 vm.$el 也是在文档内
-  beforeUpdate:
-    数据更新时调用，发生在虚拟 DOM 打补丁之前，这里适合在更新之前访问现有的 DOM 比如手动移除已添加的事件监听
-  updated:
-    由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子
-    当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。
-  active:
-    被 keep-alive 缓存的组件激活时调用(该钩子在服务器端渲染期间不被调用)
-  deactivated: 
-    被 keep-alive 缓存的组件停用时调用(该钩子在服务器端渲染期间不被调用)
-  beforedDestroy:
-    实例销毁之前调用。在这一步，实例仍然完全可用(该钩子在服务器端渲染期间不被调用)
-  destroyed:
-    实例销毁之后调用。该钩子被调用后，对应的 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁
+
+### 13、new Vue 的步骤
+``` js
+  1、`new Vue` 的时候会调用 _init 方法
+    * 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
+    * 定义 `$on`、`$off`、`$emit` 等事件
+    * 定义 _update、$forceUpdate、$destroy 生命周期
+
+  2、调用 `$mount` 进行页面的挂载
+  3、挂载的时候主要是通过 `mountComponent` 方法
+  4、定义 `updateComponent` 更新函数
+  5、执行 `render` 生成虚拟 `DOM`
+  6、`_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
 ```
 
 ## react
 
 ### 1、hook钩子函数
-```
-  1、useState hook
+```js
+  1、`useState hook`
     * 让函数组件也可以有state状态，并进行状态数据的读写操作
     * 语法 const [data, setData] = useState(defaultVal)
-    * useState（）说明
+    * useState()说明
         参数：第一次初始化指定的值在内部做缓存
         返回值：包含2个元素的数组，第一个为内部当前状态值，第二个为更新状态值的函数
-    * setData（）两种写法
-      setData（newValue）：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
-      setData（value => newValue）：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
+    * setData()两种写法
+      setData(newValue)：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
+      setData(value => newValue)：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
 
-  2、useEffect hook
-    * 可以让你在函数组件中执行副作用（用于模拟生命周期的钩子）
+  2、`useEffect hook`
+    * 可以让你在函数组件中执行副作用(用于模拟生命周期的钩子)
     * react中的副作用操作：
         发送请求数据的获取
         设置订阅、启动定时器
@@ -318,7 +341,7 @@
       componentDidUpdate()
       componentWillUnmount()
 
-  3、useRef hook
+  3、`useRef hook`
     * 可以在函数组件中存储、查找组件内的标签或任意其他类型
     * 语法 const refDom = useRef() <input ref={ refDom } /> 
     * 使用 保存标签对象，功能和React.createRef()一样
