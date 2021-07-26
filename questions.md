@@ -159,19 +159,21 @@
     3）oldvalue：指令绑定元素的前一个值，只对update和componentUpdated钩子函数有值
     4）expression：指令绑定的原始值 不对值进行任何加工
     5）arg：传递给指令的参数
-    6）modifiers：指令修饰符，如：v-focus.show.async 则接收的modifiers为｛ show：true，async：true ｝
+    6）modifiers：指令修饰符，如：v-focus.show.async 则接收的 modifiers 为｛ show：true，async：true ｝
   c、vnode：vue编译生成的虚拟dom
-  d、oldVnode：上一个vnode，只在update和componentUpdated钩子函数中有效
+  d、oldVnode：上一个 vnode，只在 update 和 componentUpdated 钩子函数中有效
 ```
 
 ### 4、keep-alive
 ``` 
-  第一次进入，钩子的触发顺序: created-> mounted-> activated
-  当再次进入（前进或者后退）时，只触发activated事件挂载的方法等
-  只执行一次的放在 mounted 中；组件每次进去执行的方法放在 activated 中
+  第一次进入，钩子的触发顺序: created-> mounted-> actived
+  当再次进入（前进或者后退）时，只触发 actived 事件挂载的方法、router 的 beforeRouteEnter
+  只执行一次的放在 mounted 中；组件每次进去执行的方法放在 actived 中
     1）include - 字符串或正则表达式，只有名称匹配的组件会被缓存
     2）exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
     3）include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
+  ！！！ 服务端不会执行 actived 方法
+
 ```
 
 ### 5、vue-router
@@ -307,6 +309,31 @@
   4、定义 `updateComponent` 更新函数
   5、执行 `render` 生成虚拟 `DOM`
   6、`_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
+```
+
+### 14、Vue 中给对象添加新属性界面不刷新
+```
+  原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
+    * 如果为对象添加少量的新属性，可以直接采用 Vue.set(orginObj, key, vaule)
+    * 如果需要为新对象添加大量的新属性，则通过 Object.assign({}, originObj, { key: value }) 创建新对象
+    * 如果实在不知道怎么操作时，可采用 $forceUpdate() 进行强制刷新
+```
+
+### 14、Vue 中 mixin 的理解和应用场景
+```
+  概念:
+    本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods 、created、computed 等
+    我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
+    在 Vue 中我们可以局部混入和全局混入
+  应用场景:
+    在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
+```
+
+### 15、v-for 中的 key
+```
+  key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
+    如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
+    如果使用了 key, Vue 会根据 key s 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
 ```
 
 ## react
