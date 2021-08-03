@@ -11,7 +11,7 @@ const PENDING = 'PENDING';      // 进行中
 const FULFILLED = 'FULFILLED';  // 已成功
 const REJECTED = 'REJECTED';    // 已失败
 
-class Promise {
+class MyPromise {
   constructor(exector) {
     // 初始化状态
     this.status = PENDING;
@@ -51,7 +51,7 @@ class Promise {
       reject(e);
     }
   }
-  
+
   then(onFulfilled, onRejected) {
     onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
     onRejected = typeof onRejected === 'function' ? onRejected :
