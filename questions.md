@@ -113,6 +113,11 @@
 
 ### 8、web 基础技术的优化
 ```
+  * 精灵图(sprite)，合并、压缩图片
+  * 减少 http 请求
+  * 懒加载、预加载
+  * 减少 iframe 使用
+  * 减少图片 src 为空
   * 开启 gzip 压缩
   * 浏览器缓存
   * CND 使用
@@ -415,6 +420,11 @@
     * 可以在函数组件中存储、查找组件内的标签或任意其他类型
     * 语法 const refDom = useRef() <input ref={ refDom } /> 
     * 使用 保存标签对象，功能和React.createRef()一样
+```
+
+### 2、redux flow
+```
+  
 ```
 
 ## 移动端
