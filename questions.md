@@ -249,15 +249,15 @@ Observer(观察者)对初始数据通过Object.defineProperty添加setter、gett
 
 ### 2、vue2 中 defineProperty 和 vue3 中 proxy 区别
 `Object.defineProperty(obj, key, descriptor)`
-缺点： 
+* 缺点： 
   * 无法监听数组的变化
   * 修改属性值的时候需要遍历对象再修改
 
 `watcher = new Proxy(tarage, handler)`
-优点： 
+* 优点： 
   * 可以直接监听数组的变化
   * 返回的是一个新对象，可以操作新的对象达到目的
-缺点：兼容性问题
+* 缺点：兼容性问题
 
 ### 3、vue 中的 directive
 * 生命周期：
