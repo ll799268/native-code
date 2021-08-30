@@ -41,17 +41,17 @@
   引用数据类型存储的地方
 
 ### 5、输入 url 发生了什么
-1、DNS域名解析
++ DNS域名解析
   客户端收到你输入的域名地址后，它首先去找本地的hosts文件，检查在该文件中是否有相应的域名、IP对应关系，如果有，则向其IP地址发送请求
   如果没有，再去找DNS服务器。
-2、建立TCP连接（三次握手）
-3、发送HTTP请求
-4、服务器处理请求
-5、返回响应结果
-6、关闭TCP连接（四次挥手）
-7、浏览器解析HTML
++ 建立TCP连接（三次握手）
++ 发送HTTP请求
++ 服务器处理请求
++ 返回响应结果
++ 关闭TCP连接（四次挥手）
++ 浏览器解析HTML
   浏览器通过解析HTML，生成DOM树，解析CSS，生成CSSOM树，然后通过DOM树和CSSPOM树生成渲染树。渲染树与DOM树不同，渲染树中并没有head、display为none等不必显示的节点。
-8、浏览器布局渲染
++ 浏览器布局渲染
   根据渲染树布局，计算CSS样式，即每个节点在页面中的大小和位置等几何信息。HTML默认是流式布局的，CSS和js会打破这种布局，改变DOM的外观样式以及大小和位置。最后浏览器绘制各个节点，将页面展示给用户。
 
   replaint：屏幕的一部分重画，不影响整体布局，比如某个CSS的背景色变了，但元素的几何尺寸和位置不变。
@@ -164,36 +164,36 @@ eg：
 TCP 应用场景适用于对效率要求低，对准确性要求高或者要求有链接的场景，而UDP 适用场景为对效率要求高，对准确性要求低的场景
 
 ### 2、OSI 七层模型
-1、应用层
++ 应用层
   位于OSI参考模型的第七层，其作用是通过应用程序间的交互来完成特定的网络应用
-2、表示层
++ 表示层
   使通信的应用程序能够解释交换数据的含义，其位于 OSI 参考模型的第六层，向上为应用层提供服务，向下接收来自会话层的服务
-3、会话层
++ 会话层
   负责建立、管理和终止表示层实体之间的通信会话
-4、传输层
++ 传输层
   传输层的主要任务是为两台主机进程之间的通信提供服务，处理数据包错误、数据包次序，以及其他一些关键传输问题
   传输层向高层屏蔽了下层数据通信的细节。因此，它是计算机通信体系结构中关键的一层。其中，主要的传输层协议是UDP和TCP
-5、网络层
++ 网络层
   主要任务是选择合适的网间路由和交换节点，确保数据按时成功传送
   在发送数据时。网络层把传输层产生的报文或用户数据报封装成分组和包，向下传输到数据链路层
-6、数据链路层
++ 数据链路层
   数据链路层通常也叫做链路层。在物理层和网络层之间。两台主机之间的数据传输，总是在一段一段的链路上传送的，这就需要使用专门的链路层协议
-7、物理层
++ 物理层
   作为OSI参考模型中最低的一层，物理层的作用是实现计算机节点之间比特流的透明传送
   该层的主要任务是确定与传输媒体的接口的一些特性(机械特性、电气特性、功能特性、过程特性)
   该层主要是和硬件有关，与软件关系不大
 
 ### 3、HTTP1.0/1.1/2.0 区别
-1、HTTP1.0
++ HTTP1.0
   浏览器与服务器只保持短暂的连接，浏览器的每次请求都需要与服务器建立一个TCP连接
-2、HTTP1.1
++ HTTP1.1
   默认支持长连接，即在一个TCP连接上可以传送多个HTTP请求和响应。减少了建立和关闭连接的消耗和延迟
   1、引入了持久连接，即TCP连接默认不关闭，可以被多个请求复用
   2、在同一个TCP连接里面，客户端可以同时发送多个请求
   3、虽然允许复用TCP连接，但是同一个TCP连接里面，所有的数据通信是按次序进行的，服务器只有处理完一个请求，才会接着处理下一个请求。如果前面的处理特别慢，后面就会有许多请求排队等着
   4、新增了一些请求方法
   5、新增了一些请求头和响应头
-3、HTTP2.0
++ HTTP2.0
   性能有很大的提升，如添加的特性：
     1、采用二进制格式而非文本格式
     2、完全多路复用，而非有序并阻塞的、只需一个连接即可实现并行
@@ -287,7 +287,7 @@ watcher = new Proxy(tarage, handler)
 ！！！ 服务端不会执行 actived 方法
 
 ### 5、vue-router
-1、路由守卫钩子
++ 路由守卫钩子
   全局守卫
     * beforeEach(to, from, next)
     * afterEach(to, from, next)
@@ -295,7 +295,7 @@ watcher = new Proxy(tarage, handler)
     * beforeRouteEnter(to, from, next)
     * beforeRouteUpdate(to, from, next)
     * beforeRouteLeave(to, from, next)
-2、路由原理
++ 路由原理
   hash模式（hashchange）
     url 改变的时候 会触发 hashchange 事件
   history模式（popstate）
@@ -305,19 +305,19 @@ watcher = new Proxy(tarage, handler)
     通过js 调用history的back，go，forward方法课触发该事件
 
 ### 6、vuex
-1、概念
++ 概念
   vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
-2、核心概念
++ 核心概念
   五大属性：state, getter, mutation, action, module
     state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
     getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
     mutation: 更改 state 中的唯一方法
     action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
     module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
-3、流程
++ 流程
     dispath    commit
 action => mutation => state
-4、持久化工具
++ 持久化工具
   vuex-persistedstate
 
 ### 7、v-for 和 v-if 优先级
@@ -404,16 +404,16 @@ action => mutation => state
 ```
 
 ### 13、new Vue 的步骤
-1、`new Vue` 的时候会调用 _init 方法
++ `new Vue` 的时候会调用 _init 方法
   * 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
   * 定义 `$on`、`$off`、`$emit` 等事件
   * 定义 _update、$forceUpdate、$destroy 生命周期
 
-2、调用 `$mount` 进行页面的挂载
-3、挂载的时候主要是通过 `mountComponent` 方法
-4、定义 `updateComponent` 更新函数
-5、执行 `render` 生成虚拟 `DOM`
-6、`_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
++ 调用 `$mount` 进行页面的挂载
++ 挂载的时候主要是通过 `mountComponent` 方法
++ 定义 `updateComponent` 更新函数
++ 执行 `render` 生成虚拟 `DOM`
++ `_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
 
 ### 14、Vue 中给对象添加新属性界面不刷新
 原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
@@ -435,12 +435,12 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
   如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
 
 ### 16、diff 算法
-1、概念特点：
++ 概念特点：
   diff 算法是一种通过同层的树节点进行比较的高级算法
   比较只会在同层进行，不会跨层级比较
   在diff比较过程中 循环从两边向中间比较
   diff 算法在很多场景都有使用，在 vue 中，作用域虚拟 dom 渲染成真实的 dom 的新旧 VNode 节点比较
-2、比较方式
++ 比较方式
   diff 整体策略：深度优先，同层比较
   * 比较会在同层级进行，不会跨层级比较
   * 比较过程中，循环从两边向中间收拢
@@ -469,7 +469,7 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
 ## react
 
 ### 1、hook 钩子函数
-1、`useState hook`
++ `useState hook`
   * 让函数组件也可以有state状态，并进行状态数据的读写操作
   * 语法 const [data, setData] = useState(defaultVal)
   * useState()说明
@@ -479,7 +479,7 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
     setData(newValue)：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
     setData(value => newValue)：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
 
-2、`useEffect hook`
++ `useEffect hook`
   * 可以让你在函数组件中执行副作用(用于模拟生命周期的钩子)
   * react中的副作用操作：
       发送请求数据的获取
@@ -497,7 +497,7 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
     componentDidUpdate()
     componentWillUnmount()
 
-3、`useRef hook`
++ `useRef hook`
   * 可以在函数组件中存储、查找组件内的标签或任意其他类型
   * 语法 const refDom = useRef() <input ref={ refDom } />
   * 使用 保存标签对象，功能和React.createRef()一样
@@ -507,9 +507,9 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
   js引擎和页面渲染引擎两个线程是互斥的，当其中一个线程执行时，另一个线程只能挂起等待
   如果js线程长时间占用了主线程，那么渲染层面的更新就不得不长时间等待，界面长时间不断更新，会导致页面响应速度变差，用户可能会感觉到卡顿
 特性：
-  1、为每个增加了优先级，优先级高的任务可以中断低优先级的任务。然后再重新执行优先级低的任务
-  2、增加了异步任务，调用requestldleCallback api，浏览器空闲的时候执行
-  3、dom diff 树变成了链表，一个dom对应两个fiber，对应两个队列，这都是为找到被中断的任务重新执行
+  + 为每个增加了优先级，优先级高的任务可以中断低优先级的任务。然后再重新执行优先级低的任务
+  + 增加了异步任务，调用requestldleCallback api，浏览器空闲的时候执行
+  + dom diff 树变成了链表，一个dom对应两个fiber，对应两个队列，这都是为找到被中断的任务重新执行
 从架构角度来看，Fiber 是对 React 核心算法(即调和过程)的重写
 从编码角度来看，Fiber 是 React 内部所定义的一种数据结构，它是对Fiber 树结构的节点单位，也就是React 16 新架构下的虚拟DOM
 原理：
@@ -583,12 +583,12 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
   [https://lodash.com/docs/4.17.15]
 
 ## 安全
-1、XSS攻击的防范
++ XSS攻击的防范
   * HttpOnly 防止劫取 Cookie
   * 输入检查-不要相信用户的所有输入
   * 输出检查-存的时候转义或者编码
 
-2、CSRF攻击的防范
++ CSRF攻击的防范
   * 验证码
   * Referer Check
   * 添加token验证
