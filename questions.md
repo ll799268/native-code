@@ -247,12 +247,14 @@ Observer(观察者)对初始数据通过Object.defineProperty添加setter、gett
 
 ### 2、vue2 中 defineProperty 和 vue3 中 proxy 区别
 Object.defineProperty(obj, key, descriptor)
-缺点： 1、无法监听数组的变化
-      2、修改属性值的时候需要遍历对象再修改
+缺点： 
+  1、无法监听数组的变化
+  2、修改属性值的时候需要遍历对象再修改
 
 watcher = new Proxy(tarage, handler)
-优点： 1、可以直接监听数组的变化
-      2、返回的是一个新对象，可以操作新的对象达到目的
+优点： 
+  1、可以直接监听数组的变化
+  2、返回的是一个新对象，可以操作新的对象达到目的
 缺点：兼容性问题
 
 ### 3、vue 中的 directive
@@ -276,7 +278,7 @@ watcher = new Proxy(tarage, handler)
   d、oldVnode：上一个 vnode，只在 update 和 componentUpdated 钩子函数中有效
 
 ### 4、keep-alive
-第一次进入，钩子的触发顺序: `created-> mounted-> actived`
+第一次进入，钩子的触发顺序: created-> mounted-> actived
 当再次进入（前进或者后退）时，只触发 actived 事件挂载的方法、router 的 beforeRouteEnter
 只执行一次的放在 mounted 中；组件每次进去执行的方法放在 actived 中
   1）include - 字符串或正则表达式，只有名称匹配的组件会被缓存
@@ -285,95 +287,77 @@ watcher = new Proxy(tarage, handler)
 ！！！ 服务端不会执行 actived 方法
 
 ### 5、vue-router
-
-```
-  1、路由守卫钩子
-    全局守卫
-      * beforeEach(to, from, next)
-      * afterEach(to, from, next)
-    局部守卫
-      * beforeRouteEnter(to, from, next)
-      * beforeRouteUpdate(to, from, next)
-      * beforeRouteLeave(to, from, next)
-  2、路由原理
-    hash模式（hashchange）
-      url 改变的时候 会触发 hashchange 事件
-    history模式（popstate）
-      通过浏览器前进后退改变 URL 时会触发 popstate 事件
-      通过pushState、replaceState、<a>标签改变 URL 不会触发 popstate 事件。
-      好在我们可以拦截 pushState、replaceState的调用和<a>标签的点击事件来检测 URL 变化
-      通过js 调用history的back，go，forward方法课触发该事件
-```
+1、路由守卫钩子
+  全局守卫
+    * beforeEach(to, from, next)
+    * afterEach(to, from, next)
+  局部守卫
+    * beforeRouteEnter(to, from, next)
+    * beforeRouteUpdate(to, from, next)
+    * beforeRouteLeave(to, from, next)
+2、路由原理
+  hash模式（hashchange）
+    url 改变的时候 会触发 hashchange 事件
+  history模式（popstate）
+    通过浏览器前进后退改变 URL 时会触发 popstate 事件
+    通过pushState、replaceState、<a>标签改变 URL 不会触发 popstate 事件。
+    好在我们可以拦截 pushState、replaceState的调用和<a>标签的点击事件来检测 URL 变化
+    通过js 调用history的back，go，forward方法课触发该事件
 
 ### 6、vuex
-
-```
-  1、概念
-    vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
-  2、核心概念
-    * 五大属性：state, getter, mutation, action, module
-      state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
-      getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
-      mutation: 更改 state 中的唯一方法
-      action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
-      module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
-  3、流程
-      dispath    commit
-  action => mutation => state
-  4、持久化工具
-    vuex-persistedstate
-```
+1、概念
+  vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
+2、核心概念
+  五大属性：state, getter, mutation, action, module
+    state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
+    getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
+    mutation: 更改 state 中的唯一方法
+    action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
+    module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
+3、流程
+    dispath    commit
+action => mutation => state
+4、持久化工具
+  vuex-persistedstate
 
 ### 7、v-for 和 v-if 优先级
-
-```
-  2.x 版本中在一个元素上同时使用 v-if 和 v-for 时，v-for 会优先作用
-  3.x 版本中 v-if 总是优先于 v-for 生效
-  迁移策略
-    由于语法上存在歧义，建议避免在同一元素上同时使用两者。
-    比起在模板层面管理相关逻辑，更好的办法是通过创建计算属性筛选出列表，并以此创建可见元素
-```
+2.x 版本中在一个元素上同时使用 v-if 和 v-for 时，v-for 会优先作用
+3.x 版本中 v-if 总是优先于 v-for 生效
+迁移策略
+  由于语法上存在歧义，建议避免在同一元素上同时使用两者。
+  比起在模板层面管理相关逻辑，更好的办法是通过创建计算属性筛选出列表，并以此创建可见元素
 
 ### 8、Vue.nextTick
-
-```
-  在下次 DOM 更新循环结束之后执行延迟回调
-  在修改数据之后立即使用这个方法，获取更新后的 DOM
-```
+在下次 DOM 更新循环结束之后执行延迟回调
+在修改数据之后立即使用这个方法，获取更新后的 DOM
 
 ### 9、Vue 项目的优化（代码层面的优化）
-
-```
-  * v-if 和 v-show 区分使用场景
-  * computed 和 watch 区分使用场景
-  * v-for 遍历必须为 item 添加 key，同时避免使用 v-if
-  * 长列表的性能优化
-  * 事件的销毁
-  * 图片资源懒加载
-  * 路由懒加载
-  * 第三方插件按需加载
-  * 优化无限列表性能
-  * 服务端渲染 SSR 或者预加载
-```
+* v-if 和 v-show 区分使用场景
+* computed 和 watch 区分使用场景
+* v-for 遍历必须为 item 添加 key，同时避免使用 v-if
+* 长列表的性能优化
+* 事件的销毁
+* 图片资源懒加载
+* 路由懒加载
+* 第三方插件按需加载
+* 优化无限列表性能
+* 服务端渲染 SSR 或者预加载
 
 ### 10、computed 和 watch 的区别和运用的场景
-
-```
-  区别：
-    computed 计算属性，依赖 data 属性值，有缓存的。只有他的依赖属性值发生改变，下一次获取的值会重新计算
-    watch 观察作用，类似于某些数据的监听回调，每当监听的数据发生改变会执行后续操作
-  运用场景：
-    computed 当我们需要进行数值计算，并且依赖于其他数据时，应该使用computed 因为可以利用缓存机制，避免每次获取值时，都需要重新计算
-    watch 当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它
-      使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
-```
+区别：
+  computed 计算属性，依赖 data 属性值，有缓存的。只有他的依赖属性值发生改变，下一次获取的值会重新计算
+  watch 观察作用，类似于某些数据的监听回调，每当监听的数据发生改变会执行后续操作
+运用场景：
+  computed 当我们需要进行数值计算，并且依赖于其他数据时，应该使用computed 因为可以利用缓存机制，避免每次获取值时，都需要重新计算
+  watch 当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它
+    使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
 
 ### 11、父子组件生命周期执行顺序
 
 ```js
-  1、挂载阶段
+  // 1、挂载阶段
     beforeCreate(父) -> created(父) -> beforeMount(父) -> beforeCreate(子) -> created(子) -> beforeMount(子) -> mounted(子) -> mounted(父)
-  2、子组件更新阶段
+  // 2、子组件更新阶段
     beforeUpdate(父) -> beforeUpdate(子) -> updated(子) -> updated(父)
 ```
 
@@ -420,61 +404,46 @@ watcher = new Proxy(tarage, handler)
 ```
 
 ### 13、new Vue 的步骤
+1、`new Vue` 的时候会调用 _init 方法
+  * 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
+  * 定义 `$on`、`$off`、`$emit` 等事件
+  * 定义 _update、$forceUpdate、$destroy 生命周期
 
-```js
-  1、`new Vue` 的时候会调用 _init 方法
-    * 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
-    * 定义 `$on`、`$off`、`$emit` 等事件
-    * 定义 _update、$forceUpdate、$destroy 生命周期
-
-  2、调用 `$mount` 进行页面的挂载
-  3、挂载的时候主要是通过 `mountComponent` 方法
-  4、定义 `updateComponent` 更新函数
-  5、执行 `render` 生成虚拟 `DOM`
-  6、`_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
-```
+2、调用 `$mount` 进行页面的挂载
+3、挂载的时候主要是通过 `mountComponent` 方法
+4、定义 `updateComponent` 更新函数
+5、执行 `render` 生成虚拟 `DOM`
+6、`_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
 
 ### 14、Vue 中给对象添加新属性界面不刷新
-
-```
-  原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
-    * 如果为对象添加少量的新属性，可以直接采用 Vue.set(orginObj, key, vaule)
-    * 如果需要为新对象添加大量的新属性，则通过 Object.assign({}, originObj, { key: value }) 创建新对象
-    * 如果实在不知道怎么操作时，可采用 $forceUpdate() 进行强制刷新
-```
+原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
+  * 如果为对象添加少量的新属性，可以直接采用 Vue.set(orginObj, key, vaule)
+  * 如果需要为新对象添加大量的新属性，则通过 Object.assign({}, originObj, { key: value }) 创建新对象
+  * 如果实在不知道怎么操作时，可采用 $forceUpdate() 进行强制刷新
 
 ### 14、Vue 中 mixin 的理解和应用场景
-
-```
-  概念:
-    本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods 、created、computed 等
-    我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
-    在 Vue 中我们可以局部混入和全局混入
-  应用场景:
-    在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
-```
+概念:
+  本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods 、created、computed 等
+  我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
+  在 Vue 中我们可以局部混入和全局混入
+应用场景:
+  在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
 
 ### 15、v-for 中的 key
-
-```
-  key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
-    如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
-    如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
-```
+key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
+  如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
+  如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
 
 ### 16、diff 算法
-
-```
-  1、概念特点：
-    diff 算法是一种通过同层的树节点进行比较的高级算法
-    比较只会在同层进行，不会跨层级比较
-    在diff比较过程中 循环从两边向中间比较
-    diff 算法在很多场景都有使用，在 vue 中，作用域虚拟 dom 渲染成真实的 dom 的新旧 VNode 节点比较
-  2、比较方式
-    diff 整体策略：深度优先，同层比较
-    * 比较会在同层级进行，不会跨层级比较
-    * 比较过程中，循环从两边向中间收拢
-```
+1、概念特点：
+  diff 算法是一种通过同层的树节点进行比较的高级算法
+  比较只会在同层进行，不会跨层级比较
+  在diff比较过程中 循环从两边向中间比较
+  diff 算法在很多场景都有使用，在 vue 中，作用域虚拟 dom 渲染成真实的 dom 的新旧 VNode 节点比较
+2、比较方式
+  diff 整体策略：深度优先，同层比较
+  * 比较会在同层级进行，不会跨层级比较
+  * 比较过程中，循环从两边向中间收拢
 
 ### 16、无法检测对象 property 的添加或者移除
 
@@ -498,159 +467,126 @@ watcher = new Proxy(tarage, handler)
 ## react
 
 ### 1、hook 钩子函数
+1、`useState hook`
+  * 让函数组件也可以有state状态，并进行状态数据的读写操作
+  * 语法 const [data, setData] = useState(defaultVal)
+  * useState()说明
+      参数：第一次初始化指定的值在内部做缓存
+      返回值：包含2个元素的数组，第一个为内部当前状态值，第二个为更新状态值的函数
+  * setData()两种写法
+    setData(newValue)：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
+    setData(value => newValue)：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
 
-```js
-  1、`useState hook`
-    * 让函数组件也可以有state状态，并进行状态数据的读写操作
-    * 语法 const [data, setData] = useState(defaultVal)
-    * useState()说明
-        参数：第一次初始化指定的值在内部做缓存
-        返回值：包含2个元素的数组，第一个为内部当前状态值，第二个为更新状态值的函数
-    * setData()两种写法
-      setData(newValue)：参数为非函数组值，直接指定新的状态值，内部用其覆盖原来的状态值
-      setData(value => newValue)：参数作为函数，接受原本的状态值，返回新的状态值，内部用其覆盖原来的值
+2、`useEffect hook`
+  * 可以让你在函数组件中执行副作用(用于模拟生命周期的钩子)
+  * react中的副作用操作：
+      发送请求数据的获取
+      设置订阅、启动定时器
+      手动更改真实DOM
+  * 语法和说明：
+    useEffect(() => {
+      在此可操作性任何带副作用的操作
+      return () => { 在组件卸载前执行
+        在此做一些收尾性的工作，取消订阅、清定时器
+      }
+    }, [stateValue]) 如果指定是[]，回调函数只会在第一次render后执行
+  * 可以把useEffect Hook 看做是如下三个函数的结合
+    componentDidMount()
+    componentDidUpdate()
+    componentWillUnmount()
 
-  2、`useEffect hook`
-    * 可以让你在函数组件中执行副作用(用于模拟生命周期的钩子)
-    * react中的副作用操作：
-        发送请求数据的获取
-        设置订阅、启动定时器
-        手动更改真实DOM
-    * 语法和说明：
-      useEffect(() => {
-        在此可操作性任何带副作用的操作
-        return () => { 在组件卸载前执行
-          在此做一些收尾性的工作，取消订阅、清定时器
-        }
-      }, [stateValue]) 如果指定是[]，回调函数只会在第一次render后执行
-    * 可以把useEffect Hook 看做是如下三个函数的结合
-      componentDidMount()
-      componentDidUpdate()
-      componentWillUnmount()
-
-  3、`useRef hook`
-    * 可以在函数组件中存储、查找组件内的标签或任意其他类型
-    * 语法 const refDom = useRef() <input ref={ refDom } />
-    * 使用 保存标签对象，功能和React.createRef()一样
-```
+3、`useRef hook`
+  * 可以在函数组件中存储、查找组件内的标签或任意其他类型
+  * 语法 const refDom = useRef() <input ref={ refDom } />
+  * 使用 保存标签对象，功能和React.createRef()一样
 
 ### 2、Fiber 架构
-
-```
-  问题：
-    js引擎和页面渲染引擎两个线程是互斥的，当其中一个线程执行时，另一个线程只能挂起等待
-    如果js线程长时间占用了主线程，那么渲染层面的更新就不得不长时间等待，界面长时间不断更新，会导致页面响应速度变差，用户可能会感觉到卡顿
-  特性：
-    1、为每个增加了优先级，优先级高的任务可以中断低优先级的任务。然后再重新执行优先级低的任务
-    2、增加了异步任务，调用requestldleCallback api，浏览器空闲的时候执行
-    3、dom diff 树变成了链表，一个dom对应两个fiber，对应两个队列，这都是为找到被中断的任务重新执行
-  从架构角度来看，Fiber 是对 React 核心算法(即调和过程)的重写
-  从编码角度来看，Fiber 是 React 内部所定义的一种数据结构，它是对Fiber 树结构的节点单位，也就是React 16 新架构下的虚拟DOM
-  原理：
-    Fiber 把渲染任务更新过程拆分成多个子任务，每次只做一小部分，做完看是否有剩余时间，如果有继续下一个任务；如果没有，挂起当前任务，将时间控制权交给主线程，等主线程不忙的时候在继续进行
-    即可以中断和恢复，恢复后也可以复用之前的中间状态，并给不同的任务赋予不同的优先级，其中每个任务更新单元为React Element 对应的 Fiber 节点
-    实现的方式的是 requestIdleCallback 方法：
-      window.requestIdleCallback() 方法将在浏览器的空闲时段内调用的函数排队。这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入相应
-    首先 React 中任务切割为多个步骤，分批完成。在完成一部分任务之后，将控制权交回浏览器，让浏览器有时间再进行页面的渲染。等浏览器忙完之后有剩余时间，再继续之前React未完成的任务，是一种合作式调度
-    该实现过程是基于 Fiber 节点实现，作为静态的数据结构来说，每个Fiber节点对应一个 React element，保存了该组件的类型(函数组件、类组件、原生组件等等)、对应的DOM节点等信息
-    作为动态的工作单元来说，每个 Fiber 节点保存了本次更新中该组件改变的状态、要执行的工作
-```
+问题：
+  js引擎和页面渲染引擎两个线程是互斥的，当其中一个线程执行时，另一个线程只能挂起等待
+  如果js线程长时间占用了主线程，那么渲染层面的更新就不得不长时间等待，界面长时间不断更新，会导致页面响应速度变差，用户可能会感觉到卡顿
+特性：
+  1、为每个增加了优先级，优先级高的任务可以中断低优先级的任务。然后再重新执行优先级低的任务
+  2、增加了异步任务，调用requestldleCallback api，浏览器空闲的时候执行
+  3、dom diff 树变成了链表，一个dom对应两个fiber，对应两个队列，这都是为找到被中断的任务重新执行
+从架构角度来看，Fiber 是对 React 核心算法(即调和过程)的重写
+从编码角度来看，Fiber 是 React 内部所定义的一种数据结构，它是对Fiber 树结构的节点单位，也就是React 16 新架构下的虚拟DOM
+原理：
+  Fiber 把渲染任务更新过程拆分成多个子任务，每次只做一小部分，做完看是否有剩余时间，如果有继续下一个任务；如果没有，挂起当前任务，将时间控制权交给主线程，等主线程不忙的时候在继续进行
+  即可以中断和恢复，恢复后也可以复用之前的中间状态，并给不同的任务赋予不同的优先级，其中每个任务更新单元为React Element 对应的 Fiber 节点
+  实现的方式的是 requestIdleCallback 方法：
+    window.requestIdleCallback() 方法将在浏览器的空闲时段内调用的函数排队。这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入相应
+  首先 React 中任务切割为多个步骤，分批完成。在完成一部分任务之后，将控制权交回浏览器，让浏览器有时间再进行页面的渲染。等浏览器忙完之后有剩余时间，再继续之前React未完成的任务，是一种合作式调度
+  该实现过程是基于 Fiber 节点实现，作为静态的数据结构来说，每个Fiber节点对应一个 React element，保存了该组件的类型(函数组件、类组件、原生组件等等)、对应的DOM节点等信息
+  作为动态的工作单元来说，每个 Fiber 节点保存了本次更新中该组件改变的状态、要执行的工作
 
 ## webpack
 
 ### 1、loader 和 plugins 区别
-
-```
-  它们是两个完全不同的东西。loader负责处理源文件，如CSS、jsx文件，一次处理一个文件。而 plugins 并不直接操作单个文件，它直接对整个构建过程起作用。
+它们是两个完全不同的东西。loader负责处理源文件，如CSS、jsx文件，一次处理一个文件。而 plugins 并不直接操作单个文件，它直接对整个构建过程起作用。
   loader 文件、编译转换工具，将模块原内容按照需求转换成新内容
   plugins webpack的监听器，接受webpack下发的消息通知下发
-```
 
 ### 2、图片处理常见的加载器有几种
-
-```
-  * file-loader，默认情况下会根据图片生成对应的MD5散列的文件格式。
-  * url-loader，它类似于file-loader，但是url-loader可以根据自身文件的大小，来决定是否把转化为base64格式的DataUrl单独作为文件，也可以自定义对应的散列文件名。
-  * image-webpack-loader，提供压缩图片的功能。
-```
+* file-loader，默认情况下会根据图片生成对应的MD5散列的文件格式。
+* url-loader，它类似于file-loader，但是url-loader可以根据自身文件的大小，来决定是否把转化为base64格式的DataUrl单独作为文件，也可以自定义对应的散列文件名。
+* image-webpack-loader，提供压缩图片的功能。
 
 ### 3、webpack 核心概念
-
-```
-  * entry(入口)：构建项目的起点，默认根目录为 ./src
-  * output(出口)：告诉 webpack 在哪里输出它打包好的代码以及如何命名，默认目录为 ./dist
-  * modules(模块)：在 webpack 中一切皆为模块，一个文件皆为一个模块。webpack 会从配置的 entry 开始递归找出所有依赖的模块
-  * chunk(代码块)：一个 chunk 由多个模块组合而成，用于代码合并和切割
-  * loader(模块转换器)：用于把模块原内容按照需求转换为新内容
-  * plugin(扩展插件)：在 webpack 构建流程中的特定时机广播出对应事件，插件可以监听这些事件的发生，在特定的时机做对应的事情
-```
+* entry(入口)：构建项目的起点，默认根目录为 ./src
+* output(出口)：告诉 webpack 在哪里输出它打包好的代码以及如何命名，默认目录为 ./dist
+* modules(模块)：在 webpack 中一切皆为模块，一个文件皆为一个模块。webpack 会从配置的 entry 开始递归找出所有依赖的模块
+* chunk(代码块)：一个 chunk 由多个模块组合而成，用于代码合并和切割
+* loader(模块转换器)：用于把模块原内容按照需求转换为新内容
+* plugin(扩展插件)：在 webpack 构建流程中的特定时机广播出对应事件，插件可以监听这些事件的发生，在特定的时机做对应的事情
 
 ### 4、webpack 基本功能
-
-```
-  * 代码转换：Typescript 编译成 JavaScript，SASS 转换为 CSS 等等
-  * 文件优化：压缩 JavaScript、CSS、html 代码，压缩合并图片
-  * 代码分割：提取多页面的公共代码、提取首屏不需要执行部分的代码让其异步加载
-  * 模块合并：在采用模块化的项目有很多模块和文件，需要构建功能把模块分类合并成一个文件
-  * 自动刷新：监听本地源代码的变化，自动构建，刷新浏览器
-  * 代码校验：在代码提交到仓库前需要检测代码是否规范，以及单元测试是否通过
-  * 自动发布：更新完代码后，自动构建出线上发布代码并传输给发布系统
-```
+* 代码转换：Typescript 编译成 JavaScript，SASS 转换为 CSS 等等
+* 文件优化：压缩 JavaScript、CSS、html 代码，压缩合并图片
+* 代码分割：提取多页面的公共代码、提取首屏不需要执行部分的代码让其异步加载
+* 模块合并：在采用模块化的项目有很多模块和文件，需要构建功能把模块分类合并成一个文件
+* 自动刷新：监听本地源代码的变化，自动构建，刷新浏览器
+* 代码校验：在代码提交到仓库前需要检测代码是否规范，以及单元测试是否通过
+* 自动发布：更新完代码后，自动构建出线上发布代码并传输给发布系统
 
 ### 5、webpack 层面代码优化
-
-```
-  * webpack 对图片进行压缩
-  * 减少 ES6 转为 ES5 的冗余代码
-  * 提取公共代码
-  * 模板预编译
-  * 提取组件的CSS
-  * 优化 sourceMap
-  * 构建结果输出分析
-```
+* webpack 对图片进行压缩
+* 减少 ES6 转为 ES5 的冗余代码
+* 提取公共代码
+* 模板预编译
+* 提取组件的CSS
+* 优化 sourceMap
+* 构建结果输出分析
 
 ### 6、提高 webpack 的构建速度
+* 优化 loader 配置
+  在使用loader时，可以通过配置 include、exclude、test属性来匹配文件，接触include、exclude规定哪些匹配应用loader
+* 优化 resolve.modules
+  当安装的第三方模块都放在项目根目录下的 ./node_modules 目录下，所以可以指明存在第三方模块的绝对路径，以减少查询
+* 优化 resolve.alias
+  通过配置 alias 减少查找过程
+* 使用 cache-loader
+  在一些性能开销大的 loader 之前添加 cache-loader，以将结果缓存在磁盘里，显著提升二次构建速度
+  保存和读取这些缓存文件会有一定时间开销，所以请支队性能开销较大的loader使用
+* terser 启动多线程
+  使用多进程并行运行来提高构建速度
 
-```
-  1、优化 loader 配置
-    在使用loader时，可以通过配置 include、exclude、test属性来匹配文件，接触include、exclude规定哪些匹配应用loader
-  2、优化 resolve.modules
-    当安装的第三方模块都放在项目根目录下的 ./node_modules 目录下，所以可以指明存在第三方模块的绝对路径，以减少查询
-  3、优化 resolve.alias
-    通过配置 alias 减少查找过程
-  4、使用 cache-loader
-    在一些性能开销大的 loader 之前添加 cache-loader，以将结果缓存在磁盘里，显著提升二次构建速度
-    保存和读取这些缓存文件会有一定时间开销，所以请支队性能开销较大的loader使用
-  5、terser 启动多线程
-    使用多进程并行运行来提高构建速度
-
-```
 
 ### 7、webpack proxy
-
-```
-  解决跨域的原理：(服务器之前请求数据不会出现跨域行为，跨域行为是浏览器的安全策略限制)
-      当本地发送请求的时候，代理服务器响应该请求，并将请求转发到目标服务器
-      目标服务器响应数据后再讲数据返回给代理服务器，最终再由代理服务器将数据响应给本地
-```
+解决跨域的原理：(服务器之前请求数据不会出现跨域行为，跨域行为是浏览器的安全策略限制)
+  当本地发送请求的时候，代理服务器响应该请求，并将请求转发到目标服务器
+  目标服务器响应数据后再讲数据返回给代理服务器，最终再由代理服务器将数据响应给本地
 
 ## 库
-
-```
-  * lodash 内置方法库
-    https://lodash.com/docs/4.17.15
-```
+* lodash 内置方法库
+  [https://lodash.com/docs/4.17.15]
 
 ## 安全
+1、XSS攻击的防范
+  * HttpOnly 防止劫取 Cookie
+  * 输入检查-不要相信用户的所有输入
+  * 输出检查-存的时候转义或者编码
 
-```
-  1、XSS攻击的防范
-    * HttpOnly 防止劫取 Cookie
-    * 输入检查-不要相信用户的所有输入
-    * 输出检查-存的时候转义或者编码
-
-  2、CSRF攻击的防范
-    * 验证码
-    * Referer Check
-    * 添加token验证
-```
+2、CSRF攻击的防范
+  * 验证码
+  * Referer Check
+  * 添加token验证
