@@ -440,7 +440,7 @@ action => mutation => state
 
 ### 14、Vue 中 mixin 的理解和应用场景
 * 概念:
-  + 本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods 、created、computed 等
+  + 本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods、created、computed 等
   + 我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
   + 在 Vue 中我们可以局部混入和全局混入
 * 应用场景:
