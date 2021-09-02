@@ -70,7 +70,7 @@
 ```
 
 ### 4、new Vue 的步骤
-+ `new Vue` 的时候会调用 _init 方法
++ `new Vue` 的时候会调用 _initMixin 方法
   * 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
   * 定义 `$on`、`$off`、`$emit` 等事件
   * 定义 `_update`、`$forceUpdate`、`$destroy` 生命周期
