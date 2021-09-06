@@ -34,7 +34,22 @@
   * 语法 const refDom = useRef() <input ref={ refDom } />
   * 使用 保存标签对象，功能和React.createRef()一样
 
-### 2、Fiber 架构
+### 2、memo、useCallback、useMemo
+* memo
+  React.memo为高阶组件，它与React.PureComponents非常相似  
+  默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现  
+  ```js
+    function MyComponent (props) {
+      // 使用props渲染
+    }
+    function areEqual(prevProps, nextProps) {
+      // 如果把 nextProps 传入 render 方法的返回结果与将 prevProps 传入 render 方法的返回结果一致则返回 true, 否则返回 false
+    }
+    export default React.memo(MyComponent, areEqual)
+  ```
+  此方法仅作为性能优化的方式，但请不要依赖它来阻止渲染，因为这会产生bug  
+
+### 3、Fiber 架构
 * 问题：
   js引擎和页面渲染引擎两个线程是互斥的，当其中一个线程执行时，另一个线程只能挂起等待
   如果js线程长时间占用了主线程，那么渲染层面的更新就不得不长时间等待，界面长时间不断更新，会导致页面响应速度变差，用户可能会感觉到卡顿
