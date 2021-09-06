@@ -36,7 +36,9 @@
 
 ### 2、memo、useCallback、useMemo
 * memo
-  React.memo为高阶组件，它与React.PureComponents非常相似  
+  React.memo为高阶组件，它与React.PureComponents非常相似。区别返回props结果相反  
+  如果你的组件在相同的props的情况下渲染相同的结果，那么你可以通过将其包装在React.memo中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。
+  React.memo 仅检查props变更。如果函数组件被 React.memo 包裹，且其实现中拥有useState、useReducer或useContext的Hook，当state或context发生变化时，它仍会重新渲染
   默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现  
   ```js
     function MyComponent (props) {
