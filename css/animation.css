@@ -17,11 +17,12 @@ body {
 
 #app span {
   font-size: 200px;
-  margin-right: 50px;
+  margin-right: 30px;
   animation: enter 1s;
   color: transparent;
   background: linear-gradient(135deg, red, blue);
   -webkit-background-clip: text;
+  font-weight: bold;
 }
 
 
