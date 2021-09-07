@@ -36,10 +36,10 @@
 
 ### 2、memo、useCallback、useMemo
 * memo
-  React.memo为高阶组件，它与React.PureComponents非常相似。区别返回props结果相反  
-  如果你的组件在相同的props的情况下渲染相同的结果，那么你可以通过将其包装在React.memo中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。
-  React.memo 仅检查props变更。如果函数组件被 React.memo 包裹，且其实现中拥有useState、useReducer或useContext的Hook，当state或context发生变化时，它仍会重新渲染
-  默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现  
+  + React.memo为高阶组件，它与React.PureComponents非常相似。区别返回props结果相反  
+  + 如果你的组件在相同的props的情况下渲染相同的结果，那么你可以通过将其包装在React.memo中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。
+  + React.memo 仅检查props变更。如果函数组件被 React.memo 包裹，且其实现中拥有useState、useReducer或useContext的Hook，当state或context发生变化时，它仍会重新渲染
+  + 默认情况下其只会对复杂对象做浅层对比，如果你想要控制对比过程，那么请将自定义的比较函数通过第二个参数传入来实现  
   ```js
     function MyComponent (props) {
       // 使用props渲染
@@ -50,6 +50,34 @@
     export default React.memo(MyComponent, areEqual)
   ```
   此方法仅作为性能优化的方式，但请不要依赖它来阻止渲染，因为这会产生bug  
+* useCallback
+  + 把内联回调函数及依赖项数组作为参数传入useCallback，他将返回该回调函数的memoized版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染(例如`shouldComponetsUpdate`)的子组件时，它将非常有用
+  + `useCallback(fn, [deps])` 相当于 `useMemo(() => fn, [deps])`
+  ```js
+    const memoizedCallback = useCallback(
+      () => {
+        doSomething(a, b)
+      },
+      [a, b],
+    )
+  ```
+* useMemo
+  + 把创建函数和依赖项数组作为参数传入useMemo，它仅会在某个依赖项改变时才会重新计算memoized值。这种优化有助于避免在每次渲染时都进行高开销的计算
+  + 记住，传入useMemo的函数会在渲染期间执行。请不要在这几个函数内部执行与渲染无关的操作，诸如副作用这类的操作属于`useEffect`的使用范畴
+  + 如果没有提供依赖项数组，useMemo在每次渲染时都会计算新的值
+  + 你可以把useMemo作为性能优化的一种手段，但不要把它当成语义上的保证。将来，react可能会选择遗忘以前的一些memoized值，并在一下渲染时重新计算它们，如果它离屏组件释放内存
+  ```js
+    const memoizedValue = useMemo(
+      () => computedExpensiveValue(a, b),
+      [a, b]
+    )
+  ```
+
+总结：
+1、在子组件不需要父组件的值和函数的情况下，只需要使用memo函数包裹组件即可  
+2、而在使用函数的情况，需要考虑有没有函数传递给子组件使用useCallback
+3、而在使用值所依赖的想，并且是对象和数组等值得时候二使用useMemo(当返回的是原始类型数据就不要使用了)
+
 
 ### 3、Fiber 架构
 * 问题：
