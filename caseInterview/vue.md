@@ -23,7 +23,7 @@
 
 ### 2、生命周期
 ```js
-  // 创建实例（vm）
+  // 实例初始化之后，数据观测(data ovserver)和event/watcher事件配置之前被调用
   `beforeCreate`:
     initLifecycle(vm) // 初始化组件生命周期标志位
     initEvents(vm) // 初始化事件监听
@@ -35,7 +35,8 @@
     initProvide(vm) // resolve provide after data/props
     callHook(vm, 'created')
 
-  // 实例完成 observer(数据观测) 和 property（传入的prop数据） 和方法的运算
+  // 在实例创建完成后被立即调用。在这一步，实例已完成以下的配置:  
+  // 数据观测(data observer)，property和方法的运算，watch/event事件回调。然而，挂载阶段还没开始，$el property 目前尚不可用
   `created`:
 
   // 在挂载开始之前被调用 相关的 render 函数首次被调用
@@ -52,7 +53,7 @@
   `updated`:
 
   // 被 keep-alive 缓存的组件激活时调用(该钩子在服务器端渲染期间不被调用)
-  `active`:
+  `activated`:
 
   // 实例销毁之前调用。在这一步，实例仍然完全可用(该钩子在服务器端渲染期间不被调用)
   `beforedDestroy`:
