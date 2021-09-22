@@ -4,7 +4,8 @@
 
 class WaterfallFlow {
   constructor() {
-    this.records = [
+    // 内部数据使用下划线开头，只读数据使用$开头
+    this.$records = [
       {
         "id": 44,
         "name": "三九999感冒灵颗粒 10g*9袋 用于感冒引起的头痛发热鼻塞流涕咽痛",
@@ -145,7 +146,7 @@ class WaterfallFlow {
     var dom = document.getElementById('app'),
       parentWidth = dom.offsetWidth
   
-    this.records.forEach((item, index) => {
+    this.$records.forEach((item, index) => {
   
       this.imgLoad(item.mainUrl, function () {
         var leftVal = index % 2 === 0 ? 0 : (parentWidth / 2) + 2 + 'px',

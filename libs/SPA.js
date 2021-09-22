@@ -5,7 +5,8 @@
  */
 class HashRouter {
   constructor() {
-    this.routes = {} // 存放路由path及callback
+    // 内部数据使用下划线开头，只读数据使用$开头
+    this._routes = {} // 存放路由path及callback
     this.currentUrl = ''
 
     // 监听路由change调用对应的路由回调
@@ -14,11 +15,11 @@ class HashRouter {
   }
 
   route(path, callback) {
-    this.routes[path] = callback
+    this._routes[path] = callback
   }
 
   push(path) {
-    this.routes[path] && this.routes[path]()
+    this._routes[path] && this._routes[path]()
   }
 }
 
@@ -42,28 +43,28 @@ window.miniRouter = new HashRouter()
  */
 class HistoryRouter {
   constructor() {
-    this.routes = {}
+    this._routes = {}
     this.listerPopState()
   }
 
   init(path) {
     window.history.replaceState({ path }, null, path)
-    this.routes[path] && this.routes[path]()
+    this._routes[path] && this._routes[path]()
   }
 
   route(path, callback) {
-    this.routes[path] = callback
+    this._routes[path] = callback
   }
 
   push(path) {
     window.history.pushState({ path }, null, path)
-    this.routes[path] && this.routes[path]()
+    this._routes[path] && this._routes[path]()
   }
 
   listerPopState() {
     window.addEventListener('popstate', e => {
       const path = e.state && e.state.path
-      this.routes[path] && this.routes[path]()
+      this._routes[path] && this._routes[path]()
     })
   }
 }
