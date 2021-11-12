@@ -44,9 +44,11 @@
 
 ### 3、Element和NodeList
 + Element
-  - 属性
+  - 属性 
+  
     attributes、classList、className、clientHeight、clientWeight、clientTop、clientLeft、id、innerHTML、localHTML、outerHTML、scrollTop、scrollWeight、scrollHeight
-  - 方法
+  - 方法 
+
     addEventListener、getAttribute、getAttribute、toggleAttribute、getAttributeNames、getBoundingClientRect、getElementsByClassName、getElementByTagName、hasAttributes、insertAdjacentElement、querySelector、querySelectorAll、removeAttribute、removeEventListener、scroll、scrollBy、scrollTo
     + toggleAttribute(name, [,force]) 切换给定元素属性的布尔值的状态，如果存在就添加、不存在就移除
     + insertAdjacentElement(position, element)
