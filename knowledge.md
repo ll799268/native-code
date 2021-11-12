@@ -1,6 +1,6 @@
 ## HTML相关
 ### 1、一些低调的HTML属性
-* input:accept 会限制上传图片的类型
+* input:type=accept 会限制上传图片的类型
 * img:onerror onerror="this.src=xx"
 * div tabindex属性
   + tabindex属性 代表着元素是否会被聚焦
@@ -28,5 +28,37 @@
 `typeof`返回一个字符串，表示该操作值得数据类型。可能返回的类型字符串有：`string`、`bollean`、`number`、`bigint`、`symbol`、`undefined`、`function`、`object`
 
 ### 2、BigInt
-`BigInt` 是一种内置对象，他提供了一种方法来表示大于`2**53-1`的整数
+`BigInt` 是一种内置对象，他提供了一种方法来表示大于`2n*53-1`的整数
 * BigInt 能使用运算符+、*、-、**和%
+* 除`>>>`(无符号右移)之外的位操作也可以支持。因为BigInt是有符号的
+* BigInt 不支持单目运算符，会报类型错误
+* 不能对BigInt使用Math对象中的方法
+* BigInt 不能与 Number数字进行混合运算，否则，将抛出TypeError
+* 在将BigInt转换为Bollean时，它的行为类似于Number数字
+* BigInt变量在转换为Number变量时可能会丢失精度
+* typeof操作时返回BigInt
+* 使用 Object、String等内置对象转换时，类似于Number数字
+* BigInt使用/除操作时，带小数的运算会被取整
+* Number 和 BigInt 可以进行比较，非严格相等
+* JSON.stringify处理BigInt会引发类型错误
+
+### 3、Element和NodeList
++ Element
+  - 属性
+    attributes、classList、className、clientHeight、clientWeight、clientTop、clientLeft、id、innerHTML、localHTML、outerHTML、scrollTop、scrollWeight、scrollHeight
+  - 方法
+    addEventListener、getAttribute、getAttribute、toggleAttribute、getAttributeNames、getBoundingClientRect、getElementsByClassName、getElementByTagName、hasAttributes、insertAdjacentElement、querySelector、querySelectorAll、removeAttribute、removeEventListener、scroll、scrollBy、scrollTo
+    + toggleAttribute(name, [,force]) 切换给定元素属性的布尔值的状态，如果存在就添加、不存在就移除
+    + insertAdjacentElement(position, element)
+      position的值有beforebegin(在该元素之前)、afterbegin(只在该元素当中，第一个子节点之前)、beforeend(只在该元素当中，最后一个孩子之后)、afterend(在该元素之后)
+  - 事件 可以使用addEventListener 添加事件
+    error、scroll、select、show、cut、whell、copy、paste、compositioned、compositionstart、compositionupdate、blur、focus、focusin、focusout、fullscreenchange、fullscreenerror、keydown、keypress、keyup、auxclick、click、contnentmenu、dbclick、mousedown、mouseenter、mouseleave、mousemove、mouseout、mouseover、mouseup、touchcancel、touchstart、touchmove、touchend
++ NodeList
+  - NodeList对象是一个nodes集合
+  - 可以通过Node.childNodes和documentSelectorAll()返回
+  - NodeList虽然不是叔叔但是有forEach方法可以迭代
+  - 可以通过Array.from()将NodeList转换为一个真实的数组
+区别：
+  - 可以把Element理解为一个Node，因为Element继承了Node Interface
+  - 可以把NodeList理解为一组Node，因为NodeList就是一个nodes集合
+  - 通过document.querySelector()返回的是一个Element。通过document.querySelectorAll()返回的是一个NodeList
