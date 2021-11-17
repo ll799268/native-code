@@ -60,3 +60,50 @@ Element和NodeList
 * BigInt使用/除操作时，带小数的运算会被取整
 * Number 和 BigInt 可以进行比较，非严格相等
 * JSON.stringify处理BigInt会引发类型错误
+
+## 性能优化
+### 1、图片预加载
++ 使用异步编程
++ 使用脚本实现
+  - 只需简单编辑、加载所需图片的路径与名称即可
+  ```js
+    const images = []
+    function preload () {
+      for (let i = 0; i < preload.arguments.length; i++) {
+        images[i] = new Image()
+        images[i].src = preload.arguments[i]
+      }
+    }
+    preload('xx', 'xx')
+  ```
++ 用css和JavaScript实现预加载 
+```css
+/* 将图片添加到可是区域外 */
+#preload-01 { background: url(xx) no-repeat -9999px -9999px; }
+```
+```js
+  // 如果JavaScript无法在用户的浏览器中正常运行，会发生什么？很简单，图片不会被预加载，当页面调用图片时，正常显示即可
+
+  // 获取使用类选择器的元素，设置background属性，以预加载不同的图片
+  function preloader () {
+    if (document.getElementById) {
+      docment.getElementById('preload-01').style.background = 'url(xx) no-repeat -9999px -9999px;'
+    }
+  }
+
+  // 延迟preloader函数的加载时间，直到页面加载完毕
+  function addLoadEvent (func) {
+    const oldOnload = window.onload 
+    if (typeof window.onload != 'function') {
+      window.onload = func
+      return
+    }
+
+    window.onload = function () {
+      oldOnload && oldOnload()
+      func()
+    }
+  }
+
+  addLoadEvent(preloader)
+```
