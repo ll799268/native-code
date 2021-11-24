@@ -61,6 +61,14 @@ Element和NodeList
 * Number 和 BigInt 可以进行比较，非严格相等
 * JSON.stringify处理BigInt会引发类型错误
 
+### 3、处理对象的实用函数
+* 使用`Object.freeze/Object.isFrozen`来冻结和检测对象的应用程序
+* `Object.keys/Object.vaules/Object.entries`在新数组中提取对象的所有属性
+* `Object.create/Object.getPrototypeOf` 可以创建一个继承自现有原型的对象，然后使用另一个实用程序函数来检查给定对象的原型
+* 使用`Object.entries`和`Object.fromEntries`将对象转换为`[key, value]`对数组
+* `Object.assign`帮助我们克隆对象或将多个对象的属性复制到一个新对象中
+* `Object.defineProperty`修改现有属性或定义新属性，它主要用于更改属性描述符
+
 ## 性能优化
 ### 1、图片预加载
 + 使用异步编程方式  
