@@ -23,7 +23,7 @@ function deepClone(origin, target) {
 }
 
 // 深拷贝(有些引用类型不生效)
-
 // const newArr = JSON.parse(JSON.stringify(arr))
 // const newArr = arr.splice(0)
 // const newArr = Object.create(arr)
+// const newObject = Object.assign({}, object)
