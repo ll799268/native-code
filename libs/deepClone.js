@@ -26,4 +26,6 @@ function deepClone(origin, target) {
 // const newArr = JSON.parse(JSON.stringify(arr))
 // const newArr = arr.splice(0)
 // const newArr = Object.create(arr)
+
+// 浅拷贝
 // const newObject = Object.assign({}, object)
