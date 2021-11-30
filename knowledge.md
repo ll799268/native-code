@@ -144,5 +144,5 @@ Element和NodeList
     - 因为location.href和history.go(0)是刷新页面的跳转，所以不会触发
     - history.pushState、history.replaceState不会触发
     - location.hash、history.back、history.go、history.forward触发
-
-
+* 单页应用  
+    history最常见的使用就是搭建前端单页应用。使用`history.pushState`方法可以改变地址栏的路径而不用刷新页面，所以这使得我们只需要在第一次进入页面的时候去请求一次html，后续的页面呈现规则由js来控制，根据不同url路径来加载不同的js模块。使用history路由需要注意额是服务器需要做好处理URL的准备，因为当用户在url为`'/a/b/c'`的页面进行刷新操作，服务器很有可能因为匹配不到路径而返回404状态码，应当对这样的路径也都返回html文件
