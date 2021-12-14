@@ -1,5 +1,7 @@
 
-
+/**
+ * 语音播放
+ */
 class Voicebroadcast {
   constructor (el) {
     this.el = el
