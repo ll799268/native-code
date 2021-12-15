@@ -28,7 +28,6 @@ const dom = {
     this.addClass(ele, newName)
   },
   siblings: function (ele) { /* 获取兄弟节点 */
-    console.log(ele.parentNode)
     let chid = ele.parentNode.children,
       eleMatch = []
     for (let i = 0, len = chid.length; i < len; i++) {
