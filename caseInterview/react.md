@@ -110,3 +110,62 @@
 通常我们输入节点的时候都是map一个数组然后返回一个ReactNode，为了方便react内部进行优化，我们必须给每一个ReactNode添加key，这个key prop在设计值不是给开发者用的，是给react用的，大概作用是给每一个ReactNode添加一个身份标识，方便react进行识别  
 在渲染过程中，如果key一样，若组件属性有所变化，则react只更新组件对应的属性；没有变化则不更新  
 如果key不一样，则react先销毁组件，然后重新创建组件
+
+### 6、react-dom-router
+* 路由入口文件：
+  ```js
+    import { Suspense } from 'react'
+    import {
+      HashRouter as Router,
+      Switch,
+      Route,
+      Redirect
+    } from 'react-router-dom'
+    import Loading from 'Loading'
+
+    const routes = []
+
+    return (
+      <Router>
+        <Suspense fallback={ <Loading /> }>
+          // 保证下面的route，即使有多个与路径匹配，也只有第一个会显示
+          <Switch>
+            {
+              routes.map(route => {
+                return <Route exact key={ route.path }
+                  path={ route.path }
+                  component={ route.component }
+                />
+              })
+            }
+            <Redirect to='/index' />
+          </Switch>
+        </Suspense>
+      </Router>
+    )
+  ```
+* 路由配置文件
+  ```js
+    import { lazy } from 'react'
+    const Login = lazy(() => import('@pages/Login'))
+
+    const routes = [
+      {
+        {
+          name: 'login',
+          path: '/login',
+          component: Login,
+          title: '登录'
+        }
+      }
+    ]
+  ```
+* 普通页面使用路由对象
+  ```js
+    import {
+      HashRouter as Router
+    } from 'react-router-dom'
+
+    const router = new Router()
+    router.xx
+  ```
