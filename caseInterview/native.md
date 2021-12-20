@@ -67,7 +67,8 @@
 * 微任务,可以理解是在当前"执行栈"中的任务执行结束后立即执行的任务。而且早于页面渲染和取任务队列中的任务。微任务包括：
   * Promise.then
   * Object.observe
-  * MutationObserver(监视对DOM树所做更改的能力)
+  * MutationObserver(监视对DOM树所做更改的能力)  
+    MutationObserver是H5新增的属性，用于监听DOM修改时间，能够监听到节点的属性、文本内容、子节点等的改动，是一个功能强大的利器
   * process.nextTick
 
 执行机制：
