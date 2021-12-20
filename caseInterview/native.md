@@ -67,7 +67,7 @@
 * 微任务,可以理解是在当前"执行栈"中的任务执行结束后立即执行的任务。而且早于页面渲染和取任务队列中的任务。微任务包括：
   * Promise.then
   * Object.observe
-  * MutaionObserver
+  * MutationObserver(监视对DOM树所做更改的能力)
   * process.nextTick
 
 执行机制：
