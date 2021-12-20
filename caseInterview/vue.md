@@ -4,9 +4,9 @@
 * 概念：
   所谓数据响应式就是对数据层做出更改能够触发视图层做出更新响应的机制
 * 为什么vue需要响应式：
-    mvvm框架中要解决的一个核心问题是连接数据层和视图层。通过数据驱动应用，数据变化，视图更新
+  mvvm框架中要解决的一个核心问题是连接数据层和视图层。通过数据驱动应用，数据变化，视图更新
 * 它能给我们带来什么好处：
-    以vue为例说明，通过数据响应式加上虚拟DOM和patch(补丁)算法，可以使我们只需要操作数据，完全不用接触繁琐的dom操作，从而大大提升开发效率
+  以vue为例说明，通过数据响应式加上虚拟DOM和patch(补丁)算法，可以使我们只需要操作数据，完全不用接触繁琐的dom操作，从而大大提升开发效率
 * vue的响应式是怎么实现的：
   + Observer(观察者)对初始数据通过Object.defineProperty添加setter、getter，
     当取数据变化(即调用get)的时候添加订阅对象(wachter)到数组里，
@@ -22,7 +22,7 @@
   * 由于响应化的实现代码抽取为独立的reactivity包，使得我们可以更加灵活的使用它，我们甚至不需要引入vue都可以体验
 
 ### 2、双向绑定原理
-vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object,defindProperty()来劫持各个属性的setter、getter，在数据变动时发布消息给订阅者，触发响应的监听回调
+vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defindProperty()来劫持各个属性的setter、getter，在数据变动时发布消息给订阅者，触发响应的监听回调
 * 具体步骤
   + 需要observer的数据对象进行递归遍历，包括子属性对象的属性，都加上setter和getter，给这个对象的某个值复制，就会触发setter，那么久能监听到了数据变化
   + compile解析横板命令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
@@ -74,7 +74,6 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object,
 ```
 
 ### 4、父子组件生命周期执行顺序
-
 ```js
   // 1、挂载阶段
   beforeCreate(父) -> created(父) -> beforeMount(父) -> beforeCreate(子) -> created(子) -> beforeMount(子) -> mounted(子) -> mounted(父)
@@ -129,7 +128,7 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object,
     * include - 字符串或正则表达式，只有名称匹配的组件会被缓存
     * exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
     * include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
-  ！！！ 服务端不会执行 actived 方法
+  ！！！ 服务器渲染不会执行 actived 方法
 
 ### 10、vue-router
 + 路由守卫钩子
@@ -166,10 +165,34 @@ action => mutation => state
   vuex-persistedstate
 
 ### 12、Vue.nextTick
-在下次 DOM 更新循环结束之后执行延迟回调
-在修改数据之后立即使用这个方法，获取更新后的 DOM
+概念：将回调延迟到下次DOM更新循环之后执行。在修改数据之后立即使用它，然后等待DOM更新
+```js
+  // todo1 将回调函数放入callbacks等待执行
+  // todo2 先对当前环境进行判断，将执行任务放到宏任务或微任务中并使用timerFunc执行
+  // 是否兼容Promise(微任务)
+  if (typeof Promise !== 'undefined' && isNative(Promise)) {} 
+  // 不是IE浏览器，兼容MutationObserver(DOM树做出改变进行监听)(微任务)
+  // MutationObserver是HTML5新增的属性，用于监听DOM修改事件，能够监听到节点的属性、文本内容、子节点等的改动，是一个功能强大的利器。
+  else if (!isIE && typeof MutationObserver !== 'undefined' && (
+    isNative(MutationObserver) ||
+    MutationObserver.toString() === '[object MutationObserverConstructor]'
+  )) {} 
+  // 是否兼容setImmediate(宏任务)
+  else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {} 
+  // 不兼容Promise、MutationObserver和setImmediate就使用setTimeout(宏任务)
+  else { // setTimeout(fn, 0) }
+```
+使用场景
+  * nextTick是Vue提供的一个全局API，由于vue的异步更新策略导致我们对数据的修改不会立刻体现在dom变化之上，此时如果想要立即获取dom状态，就需要使用这个方法
+  * Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开启一个队列，并缓冲在同一个事件循环中发生的所有数据变更。如果同一个watcher被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和DOM操作是非常重要的。nextTick方法会在队列中加入一个回调函数，确保该函数在前面dom操作完成之后才调用
+  * 所以当我们想在修改数据后立即看到dom执行结果就需要用到nextTick方法
+  * 比如。我在干什么的时候就会使用nextTick传一个回调函数进去，在里面执行dom操作即可
+  * 实现，它会在callbacks里面加入我们传入的函数然后用timerFunc异步方式调用它们，首选的异步方式会是promise
 
-### 13、Vue 项目的优化（代码层面的优化）
+### 12、异步更新队列
+Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开启一个队列，并缓存在同一事件循环中发生的所有数据变更。如果同一个watcher被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和DOM操作是非常重要的。然后，在下一个的事件循环`tick`中，Vue刷新队列并执行实际(已去重的)工作。Vue在内部对异步队列尝试使用原生的`Promise.then`、`MutationObserver`和`setImmediate`，如果执行环境不支持，则会采用`setTimeout(fn, 0)`替代
+
+### 14、Vue 项目的优化（代码层面的优化）
 * v-if 和 v-show 区分使用场景
 * computed 和 watch 区分使用场景
 * v-for 遍历必须为 item 添加 key，同时避免使用 v-if
@@ -181,13 +204,13 @@ action => mutation => state
 * 优化无限列表性能
 * 服务端渲染 SSR 或者预加载
 
-### 14、Vue 中给对象添加新属性界面不刷新
+### 15、Vue 中给对象添加新属性界面不刷新
 原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
   * 如果为对象添加少量的新属性，可以直接采用 Vue.set(orginObj, key, vaule)
   * 如果需要为新对象添加大量的新属性，则通过 Object.assign({}, originObj, { key: value }) 创建新对象
   * 如果实在不知道怎么操作时，可采用 $forceUpdate() 进行强制刷新
 
-### 15、Vue 中 mixin 的理解和应用场景
+### 16、Vue 中 mixin 的理解和应用场景
 * 概念:
   + 本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods、created、computed 等
   + 我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
@@ -195,12 +218,12 @@ action => mutation => state
 * 应用场景:
   + 在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
 
-### 16、v-for 中的 key
+### 17、v-for 中的 key
 key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
   * 如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
   * 如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
 
-### 17、diff 算法
+### 18、diff 算法
 + 概念特点：
   + diff 算法是一种通过同层的树节点进行比较的高级算法
   + 比较只会在同层进行，不会跨层级比较
@@ -211,27 +234,23 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
   * 比较会在同层级进行，不会跨层级比较
   * 比较过程中，循环从两边向中间收拢
 
-### 18、无法检测对象 property 的添加或者移除
-
+### 19、无法检测对象 property 的添加或者移除
 原因：
-由于 JavaScript(ES5) 的限制，Vue.js 不能检测到对象属性 的添加或删除。因为 Vue.js 在初始化实例时将属性转为 getter/setter，所以属性必须在 data 对象上才能让 Vue.js 转换它，才能让它是响应的
-解决办法
+  由于 JavaScript(ES5) 的限制，Vue.js 不能检测到对象属性 的添加或删除。因为 Vue.js 在初始化实例时将属性转为 getter/setter，所以属性
+必须在 data 对象上才能让Vue.js转换它，才能让它是响应的
+解决办法：
+  ```js
+    // 动态添加单个
+    Vue.set(vm.obj, propertyName, newValue)
+    vm.$set(vm.obj, propertyName, newValue)
 
-```js
-  // 动态添加单个
-  Vue.set(vm.obj, propertyName, newValue)
-  vm.$set(vm.obj, propertyName, newValue)
+    // 动态添加多个
+    this.obj = Object.assign({}, this.obj, {a: 1, b: 2})
 
-  // 动态添加多个
-  this.obj = Object.assign({}, this.obj, {a: 1, b: 2})
-
-  // 动态移除
-  Vue.delete(vm.obj, propertyName/index)
-  vm.$set(vm.obj, propertyName/index)
-```
-
-### 19、new Vue得到的实例和组件实例有什么区别
-实例为根组件，组件实例通过__proto__可以访问上层组件实例
+    // 动态移除
+    Vue.delete(vm.obj, propertyName/index)
+    vm.$set(vm.obj, propertyName/index)
+  ```
 
 ### 20、vue 中的 directive
 * 生命周期：
@@ -253,8 +272,11 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
   + vnode：vue编译生成的虚拟dom
   + oldVnode：上一个 vnode，只在 update 和 componentUpdated 钩子函数中有效
 
-### 21、为什么data是个哈拿书并且返回一个对象呢
+### 21、new Vue得到的实例和组件实例有什么区别
+实例为根组件，组件实例通过__proto__可以访问上层组件实例
+
+### 22、为什么data是个哈拿书并且返回一个对象呢
 data之所以只一个函数，是因为一个组件可能会多处调用，而每一次调用就会执行data函数并返回新的数据对象，这样，可以避免多出调用之间的数据污染
 
-### 22、为什么只对对象劫持，而要对数组进行方法重写
+### 23、为什么只对对象劫持，而要对数组进行方法重写
 因为对象最多也就十几个属性，拦截起来数量差不多，但是数组可能会有很多，拦截起来非常耗性能，所以直接重写数组原型上的方法，是比较节省性能的方案
