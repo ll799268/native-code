@@ -130,41 +130,7 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
     * include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
   ！！！ 服务器渲染不会执行 actived 方法
 
-### 10、vue-router
-+ 路由守卫钩子
-  * 全局守卫
-    + beforeEach(to, from, next)
-    + afterEach(to, from, next)
-  * 局部守卫
-    + beforeRouteEnter(to, from, next)
-    + beforeRouteUpdate(to, from, next)
-    + beforeRouteLeave(to, from, next)
-+ 路由原理
-  * hash模式（hashchange）
-    + url 改变的时候 会触发 hashchange 事件
-  * history模式（popstate）
-    + 通过浏览器前进后退改变 URL 时会触发 popstate 事件
-    + 通过pushState、replaceState、<a>标签改变 URL 不会触发 popstate 事件。
-    + 好在我们可以拦截 pushState、replaceState的调用和<a>标签的点击事件来检测 URL 变化
-    + 通过js 调用history的back，go，forward方法课触发该事件
-
-### 11、vuex
-+ 概念
-  * vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
-+ 核心概念
-  五大属性：state, getter, mutation, action, module
-    * state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
-    * getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
-    * mutation: 更改 state 中的唯一方法
-    * action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
-    * module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
-+ 流程
-    dispath    commit
-action => mutation => state
-+ 持久化工具
-  vuex-persistedstate
-
-### 12、Vue.nextTick
+### 10、Vue.nextTick
 概念：将回调延迟到下次DOM更新循环之后执行。在修改数据之后立即使用它，然后等待DOM更新
 ```js
   // todo1 将回调函数放入callbacks等待执行
@@ -189,52 +155,16 @@ action => mutation => state
   * 比如。我在干什么的时候就会使用nextTick传一个回调函数进去，在里面执行dom操作即可
   * 实现，它会在callbacks里面加入我们传入的函数然后用timerFunc异步方式调用它们，首选的异步方式会是promise
 
-### 12、异步更新队列
+### 11、异步更新队列
 Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开启一个队列，并缓存在同一事件循环中发生的所有数据变更。如果同一个watcher被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和DOM操作是非常重要的。然后，在下一个的事件循环`tick`中，Vue刷新队列并执行实际(已去重的)工作。Vue在内部对异步队列尝试使用原生的`Promise.then`、`MutationObserver`和`setImmediate`，如果执行环境不支持，则会采用`setTimeout(fn, 0)`替代
 
-### 14、Vue 项目的优化（代码层面的优化）
-* v-if 和 v-show 区分使用场景
-* computed 和 watch 区分使用场景
-* v-for 遍历必须为 item 添加 key，同时避免使用 v-if
-* 长列表的性能优化
-* 事件的销毁
-* 图片资源懒加载
-* 路由懒加载
-* 第三方插件按需加载
-* 优化无限列表性能
-* 服务端渲染 SSR 或者预加载
-
-### 15、Vue 中给对象添加新属性界面不刷新
+### 12、Vue 中给对象添加新属性界面不刷新
 原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
   * 如果为对象添加少量的新属性，可以直接采用 Vue.set(orginObj, key, vaule)
   * 如果需要为新对象添加大量的新属性，则通过 Object.assign({}, originObj, { key: value }) 创建新对象
   * 如果实在不知道怎么操作时，可采用 $forceUpdate() 进行强制刷新
 
-### 16、Vue 中 mixin 的理解和应用场景
-* 概念:
-  + 本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods、created、computed 等
-  + 我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
-  + 在 Vue 中我们可以局部混入和全局混入
-* 应用场景:
-  + 在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
-
-### 17、v-for 中的 key
-key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
-  * 如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
-  * 如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
-
-### 18、diff 算法
-+ 概念特点：
-  + diff 算法是一种通过同层的树节点进行比较的高级算法
-  + 比较只会在同层进行，不会跨层级比较
-  + 在diff比较过程中 循环从两边向中间比较
-  + diff 算法在很多场景都有使用，在 vue 中，作用域虚拟 dom 渲染成真实的 dom 的新旧 VNode 节点比较
-+ 比较方式
-  diff 整体策略：深度优先，同层比较
-  * 比较会在同层级进行，不会跨层级比较
-  * 比较过程中，循环从两边向中间收拢
-
-### 19、无法检测对象 property 的添加或者移除
+### 13、无法检测对象 property 的添加或者移除
 原因：
   由于 JavaScript(ES5) 的限制，Vue.js 不能检测到对象属性 的添加或删除。因为 Vue.js 在初始化实例时将属性转为 getter/setter，所以属性
 必须在 data 对象上才能让Vue.js转换它，才能让它是响应的
@@ -252,7 +182,15 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
     vm.$set(vm.obj, propertyName/index)
   ```
 
-### 20、vue 中的 directive
+### 14、Vue 中 mixin 的理解和应用场景
+* 概念:
+  + 本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods、created、computed 等
+  + 我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
+  + 在 Vue 中我们可以局部混入和全局混入
+* 应用场景:
+  + 在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
+
+### 15、vue 中的 directive
 * 生命周期：
   + bind函数：只调用一次，指令第一次绑定在元素上调用，即初始化调用一次，
   + inserted函数：并绑定元素插入父级元素（即new vue中el绑定的元素）时调用（此时父级元素不一定转化为了dom）
@@ -271,6 +209,68 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
     * modifiers：指令修饰符，如：`v-focus.show.async` 则接收的 modifiers 为`｛ show：true，async：true ｝`
   + vnode：vue编译生成的虚拟dom
   + oldVnode：上一个 vnode，只在 update 和 componentUpdated 钩子函数中有效
+
+### 16、v-for 中的 key
+key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
+  * 如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
+  * 如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
+
+### 17、diff 算法
++ 概念特点：
+  + diff 算法是一种通过同层的树节点进行比较的高级算法
+  + 比较只会在同层进行，不会跨层级比较
+  + 在diff比较过程中 循环从两边向中间比较
+  + diff 算法在很多场景都有使用，在 vue 中，作用域虚拟 dom 渲染成真实的 dom 的新旧 VNode 节点比较
++ 比较方式
+  diff 整体策略：深度优先，同层比较
+  * 比较会在同层级进行，不会跨层级比较
+  * 比较过程中，循环从两边向中间收拢
+
+### 18、vue-router
++ 路由守卫钩子
+  * 全局守卫
+    + beforeEach(to, from, next)
+    + afterEach(to, from, next)
+  * 局部守卫
+    + beforeRouteEnter(to, from, next)
+    + beforeRouteUpdate(to, from, next)
+    + beforeRouteLeave(to, from, next)
++ 路由原理
+  * hash模式（hashchange）
+    + url 改变的时候 会触发 hashchange 事件
+  * history模式（popstate）
+    + 通过浏览器前进后退改变 URL 时会触发 popstate 事件
+    + 通过pushState、replaceState、<a>标签改变 URL 不会触发 popstate 事件。
+    + 好在我们可以拦截 pushState、replaceState的调用和<a>标签的点击事件来检测 URL 变化
+    + 通过js 调用history的back，go，forward方法课触发该事件
+
+### 19、vuex
++ 概念
+  * vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
++ 核心概念
+  五大属性：state, getter, mutation, action, module
+    * state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
+    * getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
+    * mutation: 更改 state 中的唯一方法
+    * action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
+    * module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
++ 流程
+    dispath    commit
+action => mutation => state
++ 持久化工具
+  vuex-persistedstate
+
+### 20、Vue 项目的优化（代码层面的优化）
+* v-if 和 v-show 区分使用场景
+* computed 和 watch 区分使用场景
+* v-for 遍历必须为 item 添加 key，同时避免使用 v-if
+* 长列表的性能优化
+* 事件的销毁
+* 图片资源懒加载
+* 路由懒加载
+* 第三方插件按需加载
+* 优化无限列表性能
+* 服务端渲染 SSR 或者预加载
 
 ### 21、new Vue得到的实例和组件实例有什么区别
 实例为根组件，组件实例通过__proto__可以访问上层组件实例
