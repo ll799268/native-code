@@ -122,18 +122,19 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
   watch：当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它。使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
 
 ### 9、keep-alive
-+ 第一次进入，钩子的触发顺序: created-> mounted-> actived
++ 第一次进入，钩子的触发顺序: created -> mounted -> actived
 + 当再次进入（前进或者后退）时，只触发 actived 事件挂载的方法、router 的 beforeRouteEnter
 + 只执行一次的放在 mounted 中；组件每次进去执行的方法放在 actived 中
-    * include - 字符串或正则表达式，只有名称匹配的组件会被缓存
-    * exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
-    * include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
-  ！！！ 服务器渲染不会执行 actived 方法
+  * include - 字符串或正则表达式，只有名称匹配的组件会被缓存
+  * exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
+  * include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
+!!!服务器渲染不会执行 actived 方法
 
 ### 10、Vue.nextTick
 概念：将回调延迟到下次DOM更新循环之后执行。在修改数据之后立即使用它，然后等待DOM更新
 ```js
   // todo1 将回调函数放入callbacks等待执行
+  let callbacks = []
   // todo2 先对当前环境进行判断，将执行任务放到宏任务或微任务中并使用timerFunc执行
   // 是否兼容Promise(微任务)
   if (typeof Promise !== 'undefined' && isNative(Promise)) {} 
