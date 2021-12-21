@@ -82,27 +82,27 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
 ```
 
 ### 5、new Vue 的步骤
-+ `new Vue` 的时候会调用 _initMixin 方法
-  * 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
-  * 定义 `$on`、`$off`、`$emit` 等事件
-  * 定义 `_update`、`$forceUpdate`、`$destroy` 生命周期
+* `new Vue` 的时候会调用 _initMixin 方法
+  + 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
+  + 定义 `$on`、`$off`、`$emit` 等事件
+  + 定义 `_update`、`$forceUpdate`、`$destroy` 生命周期
 
-+ 调用 `$mount` 进行页面的挂载
-+ 挂载的时候主要是通过 `mountComponent` 方法
-+ 定义 `updateComponent` 更新函数
-+ 执行 `render` 生成虚拟 `DOM`
-+ `_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
+* 调用 `$mount` 进行页面的挂载
+* 挂载的时候主要是通过 `mountComponent` 方法
+* 定义 `updateComponent` 更新函数
+* 执行 `render` 生成虚拟 `DOM`
+* `_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
 
 ### 6、vue2 中 defineProperty 和 vue3 中 proxy 区别
 `Object.defineProperty(obj, key, descriptor)`
 * 缺点： 
-  * 无法监听数组的变化
-  * 修改属性值的时候需要遍历对象再修改
+  + 无法监听数组的变化
+  + 修改属性值的时候需要遍历对象再修改
 
 `watcher = new Proxy(tarage, handler)`
 * 优点： 
-  * 可以直接监听数组的变化
-  * 返回的是一个新对象，可以操作新的对象达到目的
+  + 可以直接监听数组的变化
+  + 返回的是一个新对象，可以操作新的对象达到目的
 * 缺点：兼容性问题
 
 ### 7、v-for 和 v-if 优先级
@@ -122,13 +122,16 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
   watch：当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它。使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
 
 ### 9、keep-alive
-+ 第一次进入，钩子的触发顺序: created -> mounted -> actived
-+ 当再次进入（前进或者后退）时，只触发 actived 事件挂载的方法、router 的 beforeRouteEnter
-+ 只执行一次的放在 mounted 中；组件每次进去执行的方法放在 actived 中
-  * include - 字符串或正则表达式，只有名称匹配的组件会被缓存
-  * exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
-  * include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
-!!!服务器渲染不会执行 actived 方法
+* 第一次进入，钩子的触发顺序: created -> mounted -> actived
+* 当再次进入（前进或者后退）时，只触发 actived 事件挂载的方法、router 的 beforeRouteEnter
+props：
+  + include 字符串或者正则表达式。只有名称匹配的组件会被缓存
+  + exclude 字符串或正则表达式，任何名称匹配的组件都不会被缓存  
+    include 和 exclude 的属性允许组件有条件地缓存。二者都可以用`,`分隔字符串、正则表达式、数组
+  + max 数字，最多可以缓存多少组件实例
+```js
+  
+```
 
 ### 10、Vue.nextTick
 概念：将回调延迟到下次DOM更新循环之后执行。在修改数据之后立即使用它，然后等待DOM更新
