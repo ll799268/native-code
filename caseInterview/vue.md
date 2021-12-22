@@ -22,7 +22,8 @@
   * 由于响应化的实现代码抽取为独立的reactivity包，使得我们可以更加灵活的使用它，我们甚至不需要引入vue都可以体验
 
 ### 2、双向绑定原理
-vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defindProperty()来劫持各个属性的setter、getter，在数据变动时发布消息给订阅者，触发响应的监听回调
+  vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.defindProperty()来劫持各个属性的setter、getter，在数据变动时发布消息给订阅者，
+触发响应的监听回调
 * 具体步骤
   + 需要observer的数据对象进行递归遍历，包括子属性对象的属性，都加上setter和getter，给这个对象的某个值复制，就会触发setter，那么久能监听到了数据变化
   + compile解析横板命令，将模板中的变量替换成数据，然后初始化渲染页面视图，并将每个令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，更新视图
@@ -81,7 +82,8 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
   beforeUpdate(父) -> beforeUpdate(子) -> updated(子) -> updated(父)
 ```
 
-### 5、new Vue 的步骤
+### 5、new Vue的步骤
+* init -> $mount -> compile -> render -> vnode -> patch -> DOM
 * `new Vue` 的时候会调用 _initMixin 方法
   + 定义 `$set`、`$get`、 `$delete`、`$watch` 等方法
   + 定义 `$on`、`$off`、`$emit` 等事件
@@ -93,7 +95,7 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
 * 执行 `render` 生成虚拟 `DOM`
 * `_update` 将虚拟 `DOM` 生成真实的 `DOM` 结构，并渲染到页面中
 
-### 6、vue2 中 defineProperty 和 vue3 中 proxy 区别
+### 6、vue2中defineProperty和vue3中proxy区别
 `Object.defineProperty(obj, key, descriptor)`
 * 缺点： 
   + 无法监听数组的变化
@@ -105,14 +107,14 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
   + 返回的是一个新对象，可以操作新的对象达到目的
 * 缺点：兼容性问题
 
-### 7、v-for 和 v-if 优先级
+### 7、v-for和v-if优先级
 * 2.x 版本中在一个元素上同时使用 v-if 和 v-for 时，v-for 会优先作用
 * 3.x 版本中 v-if 总是优先于 v-for 生效
 * 迁移策略
   + 由于语法上存在歧义，建议避免在同一元素上同时使用两者。
   + 比起在模板层面管理相关逻辑，更好的办法是通过创建计算属性筛选出列表，并以此创建可见元素
 
-### 8、methods、computed 和 watch 的区别和运用的场景
+### 8、methods、computed和watch的区别和运用的场景
 * 区别：
   methods：内部用来定义函数，需要手动调用。而不像computed和watch那样，自动执行预先定义的函数
   computed：计算属性，依赖 data 属性值，有缓存的。只有他的依赖属性值发生改变，下一次获取的值会重新计算。一个数据受多个数据影响
@@ -122,15 +124,42 @@ vue是采用数据劫持结合发布者-订阅者模式的方式，通过Object.
   watch：当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它。使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
 
 ### 9、keep-alive
-* 第一次进入，钩子的触发顺序: created -> mounted -> actived
-* 当再次进入（前进或者后退）时，只触发 actived 事件挂载的方法、router 的 beforeRouteEnter
-props：
+* props：
   + include 字符串或者正则表达式。只有名称匹配的组件会被缓存
   + exclude 字符串或正则表达式，任何名称匹配的组件都不会被缓存  
-    include 和 exclude 的属性允许组件有条件地缓存。二者都可以用`,`分隔字符串、正则表达式、数组
+    include和exclude的属性允许组件有条件的缓存。二者都可以用`,`分隔字符串、正则表达式、数组
   + max 数字，最多可以缓存多少组件实例
+* 用法
+  + `<keep-alive>`包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。和`<transiton>`相似，`<keep-alive>`是一个抽象组件：它自身不会渲染一个DOM元素，也不会出现在组件的父组件链中
+  + 第一次进入，钩子的触发顺序: created -> mounted -> actived
+  + 当再次进入（前进或者后退）时，只触发 actived 和 deactivated 事件挂载的方法、router 的 beforeRouteEnter
 ```js
-  
+  // todo1 生命周期定义了三个钩子函数
+  created() {
+    this.catch = Object.create(null) // 分别缓存虚拟DOM
+    this.keys = [] // 缓存的虚拟DOM的键集合
+  }
+  destroyed () {
+    for (const key in this.catch) {
+      pruneCacheEntry(this.catch, key, this.keys) // 删除所有缓存
+    }
+  }
+  // 实时监听黑名单的变动
+  // 在mounted这个钩子中对include、exclude参数进行检测，然后实时地更新(删除)this.catch对象数据。pruneCache函数的核心也是去调用pruneCacheEntry
+  mounted () {
+    this.$watch('include', val => {
+      pruneCache(this, name => matchs(val, name))
+    })
+    this.$watch('exclude', val => {
+      pruneCache(this, name => !matchs(val, name))
+    })
+  }
+  // todo2 render
+  // 第一步：获取<keep-alive>包裹着的第一个子组件及其组件名
+  // 第二步：根据设定的黑白名单(如果有)进行条件匹配，决定是否缓存。不匹配，直接返回组件实例(VNode)，否则执行第三步
+  // 第三步：根据组件ID和tag生成缓存Key，并在缓存对象中查找是否已缓存过该组件实例。如果存在，直接取出缓存值并更新该key在this.keys中的位置(更新key位置是实现LRU置换策略的关键)，否则执行第四步
+  // 第四步：在this.cache对象中存储该组件实例并保存key值，之后检查缓存的实例数量是否超过max的设置值，超过则根据LRU置换策略删除最近最久未使用的实例(即是下标为0的那个key)
+  // 第五步：最后并且很重要，将该组件实例的keepAlive属性值设置为true
 ```
 
 ### 10、Vue.nextTick
@@ -138,6 +167,7 @@ props：
 ```js
   // todo1 将回调函数放入callbacks等待执行
   let callbacks = []
+
   // todo2 先对当前环境进行判断，将执行任务放到宏任务或微任务中并使用timerFunc执行
   // 是否兼容Promise(微任务)
   if (typeof Promise !== 'undefined' && isNative(Promise)) {} 
@@ -162,16 +192,16 @@ props：
 ### 11、异步更新队列
 Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开启一个队列，并缓存在同一事件循环中发生的所有数据变更。如果同一个watcher被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和DOM操作是非常重要的。然后，在下一个的事件循环`tick`中，Vue刷新队列并执行实际(已去重的)工作。Vue在内部对异步队列尝试使用原生的`Promise.then`、`MutationObserver`和`setImmediate`，如果执行环境不支持，则会采用`setTimeout(fn, 0)`替代
 
-### 12、Vue 中给对象添加新属性界面不刷新
+### 12、Vue中给对象添加新属性界面不刷新
 原因：Vue 不允许在已经创建的实例动态添加新的响应式属性，若想实现数据与视图同步更新，可采用：
   * 如果为对象添加少量的新属性，可以直接采用 Vue.set(orginObj, key, vaule)
   * 如果需要为新对象添加大量的新属性，则通过 Object.assign({}, originObj, { key: value }) 创建新对象
   * 如果实在不知道怎么操作时，可采用 $forceUpdate() 进行强制刷新
 
-### 13、无法检测对象 property 的添加或者移除
+### 13、无法检测对象property的添加或者移除
 原因：
-  由于 JavaScript(ES5) 的限制，Vue.js 不能检测到对象属性 的添加或删除。因为 Vue.js 在初始化实例时将属性转为 getter/setter，所以属性
-必须在 data 对象上才能让Vue.js转换它，才能让它是响应的
+  由于 JavaScript(ES5) 的限制，Vue不能检测到对象属性的添加或删除。因为Vue在初始化实例时将属性转为getter/setter，所以属性必须在data对象上
+才能让Vue.js转换它，才能让它是响应的
 解决办法：
   ```js
     // 动态添加单个
@@ -186,7 +216,7 @@ Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开�
     vm.$set(vm.obj, propertyName/index)
   ```
 
-### 14、Vue 中 mixin 的理解和应用场景
+### 14、Vue中mixin的理解和应用场景
 * 概念:
   + 本质其实就是一个js对象，它可以包含我们组件中任意功能选项，如data、components、methods、created、computed 等
   + 我们只要将共用的功能以对象的方式传入 mixins 选项中，当组件使用 mixins对象时所有mixins对象的选项都将被混入该组件本身的选项中来
@@ -194,7 +224,7 @@ Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开�
 * 应用场景:
   + 在日常的开发中，我们经常会遇到在不同的组件中经常会需要用到一些相同或者相似的代码，这些代码的功能相对独立
 
-### 15、vue 中的 directive
+### 15、vue中的directive
 * 生命周期：
   + bind函数：只调用一次，指令第一次绑定在元素上调用，即初始化调用一次，
   + inserted函数：并绑定元素插入父级元素（即new vue中el绑定的元素）时调用（此时父级元素不一定转化为了dom）
@@ -214,12 +244,12 @@ Vue在更新DOM时是异步执行的。只要侦听到数据变化，Vue将开�
   + vnode：vue编译生成的虚拟dom
   + oldVnode：上一个 vnode，只在 update 和 componentUpdated 钩子函数中有效
 
-### 16、v-for 中的 key
+### 16、v-for中的key
 key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可以根据 key 更准确，更快找到 vnode 节点
   * 如果不用 key, Vue 会采用就地复地原则：最小化 element 的移动，并且会尝试最大程度在同适当位置对相同类型的 element 做 patch 或者 reuse
   * 如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
 
-### 17、diff 算法
+### 17、diff算法
 + 概念特点：
   + diff 算法是一种通过同层的树节点进行比较的高级算法
   + 比较只会在同层进行，不会跨层级比较
@@ -264,7 +294,7 @@ action => mutation => state
 + 持久化工具
   vuex-persistedstate
 
-### 20、Vue 项目的优化（代码层面的优化）
+### 20、Vue项目的优化（代码层面的优化）
 * v-if 和 v-show 区分使用场景
 * computed 和 watch 区分使用场景
 * v-for 遍历必须为 item 添加 key，同时避免使用 v-if
