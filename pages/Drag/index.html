@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script>
+  document.documentElement.style.fontSize = document.documentElement.clientWidth / 37.5 + 'px'
+</script>
+<style>
+  body {
+    margin: 0;
+  }
+  
+  div {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+  }
+  
+  .black-cell-group,
+  .char-cell-group {
+    width: 100%;
+    flex-direction: row;
+  }
+  
+  .char-cell-group {
+    flex-wrap: wrap;
+  }
+  
+  .black-cell-group .cell-item,
+  .char-cell-group .cell-item {
+    width: 25%;
+    height: 25vw;
+    padding: .5rem;
+  }
+  
+  .black-cell-group .cell-item .wrapper,
+  .char-cell-group .cell-item .wrapper {
+    width: 100%;
+    height: 100%;
+    border: .1rem solid #ddd;
+  }
+  
+  .char-cell-group {
+    margin-top: 5rem;
+  }
+  
+  .char-cell-group .cell-item .wrapper {
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background: orange;
+    color: #fff;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="black-cell-group">
+        <div class="cell-item">
+          <div class="wrapper"></div>
+        </div>
+        <div class="cell-item">
+          <div class="wrapper"></div>
+        </div>
+        <div class="cell-item">
+          <div class="wrapper"></div>
+        </div>
+        <div class="cell-item">
+          <div class="wrapper"></div>
+        </div>
+      </div>
+      <div class="char-cell-group">
+
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  ;(() => {
+    const idioms = ['告你家长', '两亿广告', '我是黑牌', '两月做完'],
+      oCharCellGroup = document.querySelector('.char-cell-group'),
+      oBlacks = document.querySelectorAll('.black-cell-group .cell-item .wrapper')
+
+    let charCollection = [],
+      charAreas = [],
+      blackAreas = [],
+      resArr = [],
+      oChars = null,
+      startX = 0,
+      startY = 0,
+      cellX = 0,
+      cellY = 0,
+      mouseX = 0,
+      mouseY = 0
+      
+    const init = () => {
+      charCollection = formatCharsArr()
+      render()
+      oChars = oCharCellGroup.querySelectorAll('.cell-item .wrapper')
+      getAreas(oBlacks, blackAreas)
+      getAreas(oChars, charAreas)
+      bindEvent()
+    }
+
+    const render = () => {
+      let list = ''
+
+      charCollection.forEach((char, index) => {
+        list += charCellTpl(char, index)
+      })
+
+      oCharCellGroup.innerHTML = list
+    }
+
+    const bindEvent = () => {
+      for (let i = 0; i < oChars.length; i++) {
+        const oChar = oChars[i]
+        oChar.addEventListener('touchstart', handleTouchstart, false)
+        oChar.addEventListener('touchmove', handleTouchmove, false)
+        oChar.addEventListener('touchend', handleTouchend, false)
+      }
+    }
+
+    function handleTouchstart (e) {
+      cellW = this.offsetWidth
+      cellH = this.offsetHeight
+      cellX = this.offsetLeft
+      cellY = this.offsetTop
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY
+      mouseX = startX - cellX // 差值
+      mouseY = startY - cellY
+
+      this.style.width = cellW / 10 + 'rem'
+      this.style.height = cellH / 10 + 'rem'
+      this.style.position = 'fixed'
+
+      setPosition(this, { x: cellX, y: cellY })
+
+    }
+
+    function handleTouchmove (e) {
+      e.preventDefault()
+
+      const moveX = e.touches[0].clientX,
+        moveY = e.touches[0].clientY
+
+      cellX = moveX - mouseX
+      cellY = moveY - mouseY
+
+      setPosition(this, { x: cellX, y: cellY })
+    }
+
+    function handleTouchend (e) {
+      const blackWidth = oBlacks[0].offsetWidth,
+        blackHeight = oBlacks[0].offsetHeight
+
+      for (let i = 0; i < blackAreas.length; i++) {
+        if (resArr[i] !== undefined) {
+          continue
+        }
+
+        let { startX, startY } = blackAreas[i]
+
+        if (
+          (
+            cellX > startX &&
+            cellX < startX + blackWidth / 2 &&
+            cellY > startY &&
+            cellY < startY + blackHeight / 2
+          ) || 
+          (
+            cellX + blackWidth > startX + blackWidth / 2 &&
+            cellX + blackWidth < startX + blackWidth &&
+            cellY > startY &&
+            cellY < startY + blackHeight / 2
+          )
+        ) {
+          setPosition(this, { x: startX, y: startY })
+          setResArr(this, i)
+          if (resArr.length === idioms.length) {
+            setTimeout(() => {
+              if (!checkResult()) {
+                alert('error')
+              } else {
+                alert('success')
+              }
+              resetPosition()
+            }, 1000)
+          }
+          return
+        } 
+      }
+
+      const _index = this.dataset.index,
+        charArea = charAreas[_index]
+
+      setPosition(this, { x: charArea.startX, y: charArea.startY })
+    }
+
+    const getAreas = (domCollection, arrWrapper) => {
+      let startX = 0,
+        startY = 0,
+        oItem = null
+
+      for (let i = 0; i < domCollection.length; i++) {
+        oItem = domCollection[i]
+        startX = oItem.offsetLeft
+        startY = oItem.offsetTop
+
+        arrWrapper.push({
+          startX,
+          startY
+        })
+      }
+      
+      return arrWrapper
+    }
+
+    const formatCharsArr = () => {
+      let _arr = []
+      idioms.forEach(item => {
+        _arr = _arr.concat(item.split(''))
+      })
+      return _arr.sort(randomSort)
+    }
+
+    const randomSort = () => {
+      return Math.random() > 0.5 ? 1 : -1
+    }
+
+    const charCellTpl = (char, index) => {
+      return `
+        <div class="cell-item">
+          <div class="wrapper" data-index=${ index }>${ char }</div>
+        </div>
+      `
+    }
+
+    const setPosition = (el, { x, y }) => {
+      el.style.left = x / 10 + 'rem'
+      el.style.top = y / 10 + 'rem'
+    }
+
+    const setResArr = (el, index) => {
+      resArr[index] = {
+        char: el.innerText,
+        el
+      }
+    }
+
+    const checkResult = () => {
+      let idiom = ''
+      resArr.forEach(item => {
+        idiom += item.char
+      })
+
+      return idioms.find(item => item === idiom)
+    }
+
+    const resetPosition = () => {
+      resArr.forEach(item => {
+        const el = item.el,
+          index = el.dataset.index,
+          { startX, startY } = charAreas[index]
+        setPosition(el, { x: startX, y: startY })
+      })  
+
+      resArr = []
+      startX = 0
+      startY = 0
+      cellX = 0
+      cellY = 0
+      mouseX = 0
+      mouseY = 0
+    }
+
+    init()
+
+  })()
+</script>
+
+</html>
