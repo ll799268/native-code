@@ -271,8 +271,8 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
     + url 改变的时候 会触发 hashchange 事件
   * history模式（popstate）
     + 通过浏览器前进后退改变 URL 时会触发 popstate 事件
-    + 通过pushState、replaceState、<a>标签改变 URL 不会触发 popstate 事件。
-    + 好在我们可以拦截 pushState、replaceState的调用和<a>标签的点击事件来检测 URL 变化
+    + 通过pushState、replaceState、`<a>`标签改变 URL 不会触发 popstate 事件。
+    + 好在我们可以拦截 pushState、replaceState的调用和`<a>`标签的点击事件来检测 URL 变化
     + 通过js 调用history的back，go，forward方法课触发该事件
 
 ### 19、vuex
