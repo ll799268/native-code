@@ -118,8 +118,8 @@ Set 是一种叫做集合的数据结构，Map 是一种叫做字典的数据结
     - 先调用对象自身的toString方法。如果返回原始类型的值，则对该值使用String函数，不再进行以下步骤
     - 如果 toString 方法返回的是对象，再调用原对象的valueOf方法。如果valueOf方法返回原始类型的值，则对该值使用String函数。不再进行以下步骤
     - 如果valueOf方法返回的是对象，报错
-* Bollean()
-  在Bollean类型转换时，虚值(falsey)，虚值主要有以下几种：
+* Boolean()
+  在Boolean类型转换时，虚值(falsey)，虚值主要有以下几种：
     * undefined
     * null
     * 0 +0 -0
