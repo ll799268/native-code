@@ -385,29 +385,29 @@
 
 * 编译分析类
   + webpack-bundle-analyzer 编译
-  ```js
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'server',
-      analyzerHost: '127.0.0.1',
-      analyzerPort: 8889,
-      reportFilename: 'report.html',
-      defaultSizes: 'parsed',
-      generateStatsFile: false,
-      statsFilename: 'stats.json',
-      statsOptions: null,
-      logLevel: 'info'
-    })
-  ```
+    ```js
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'server',
+        analyzerHost: '127.0.0.1',
+        analyzerPort: 8889,
+        reportFilename: 'report.html',
+        defaultSizes: 'parsed',
+        generateStatsFile: false,
+        statsFilename: 'stats.json',
+        statsOptions: null,
+        logLevel: 'info'
+      })
+    ```
   + speed-measure-webpack-plugin 统计编译过程中，各loader和plugin使用的时间
-  ```js
-    const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
-    const smp = new SpeedMeasurePlugin()
-    
-    const webpackConfig = {
-      plugins: [
-        new MyPlugin(),
-        new MyOtherPlugin()
-      ]
-    }
-    module.exports = smp.wrap(webpackConfig)
-  ```
+    ```js
+      const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
+      const smp = new SpeedMeasurePlugin()
+      
+      const webpackConfig = {
+        plugins: [
+          new MyPlugin(),
+          new MyOtherPlugin()
+        ]
+      }
+      module.exports = smp.wrap(webpackConfig)
+    ```
