@@ -169,3 +169,12 @@
     const router = new Router()
     router.xx
   ```
+
+
+### 7、不可变数据
+不可变数据概念来源于函数式编程。函数式编程中，对已初始化的变量是不可更改的，每次更改会创建新的变量
+解决方法：
+  + Immutable
+    原理如下：
+    - Immutable的实现原理是Persistent Data Structur(持久化数据结构)，对Immutable对象的任何修改或添加删除操作都会返回一个新的Immutable对象，同时使用旧数据创建新数据时，要保证旧数据同时可用且不变  
+    - 为了避免想deepClone一样，把所有节点都复制一遍带来的性能损耗，Immutable使用了StructuralSharing(结构共享)，即如果对象树中一个节点发生改变，只修改这个节点和受它影响的父节点，其它节点则进行共享
