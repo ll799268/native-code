@@ -55,7 +55,41 @@
   当本地发送请求的时候，代理服务器响应该请求，并将请求转发到目标服务器
   目标服务器响应数据后再讲数据返回给代理服务器，最终再由代理服务器将数据响应给本地
 
-### 8、插件总结归类
+### 8、热更新
+* 刷新分为两种：
+  + 一种是页面刷新，不保留页面状态，就是简单粗暴，直接window.location.reload()
+  + 另一种是基于WDS(Webpack-dev-server)的模块热替换，只需要局部刷新页面上发生变化的模块，同时可以保留当前的页面状态，如果复选框的选中状态、输入框的输入等
+* 原理  
+  + webpack-dev-server启动本地服务  
+    - 我们根据webpack-dev-server的package.json中的bin命令，可以找到命令的入口文件bin/webpack-dev-server.js  
+      + 启动webpack，生成compiler实例。compiler上有很多方法，比如可以启动webpack所有编译工作，一级监听本地文件的变化
+      + 使用express框架启动本地server，让浏览器可以请求本地的静态资源
+      + 本地server启动之后，再去启动websocket。通过websocket，可以建立本地服务和浏览器的双向通信。这样就可以实现当本地文件发生变化，立马告知浏览器可以热更新代码了
+  + 修改webpack.config.js的entry配置  
+    - 启动本地服务前，调用了updateCompiler(this.compiler)方法。这个方法中有两段关键性代码。一个是获取websocket客户端代码路径，另一个是根据配置获取webpack热更新代码路径
+  + 监听weboack编译结束  
+    - 修改好入口配置后，又调用了setupHooks方法。这个方法是用来注册监听事件的，监听每次webpack编译完成
+    - 当监听到一次webpack编译结束，就会调用_sendStats方法通过websocket给浏览器发送通知，ok和hash事件，这样浏览器就可以拿到最新的hash值，做检查更新逻辑  
+  + webpack监听文件变化  
+    - 每次修改代码，就会触发编译。说明我们还需要监听本地的代码变化，主要同过setupDevMiddleware方法实现的、执行了webpack-dev-middleware库
+      + 调用了compiler.watch方法。首先对本地文件进行编译打包，也就是webpack的一系列编译流程
+      + 其次编译结束后，开启对本地文件的监听，当文件发生变化，重新编译，编译完成后继续监听
+      + 执行setFs方法，这个方法的主要目的就是将编译后的文件打包到内存。这就是为什么开发过程中，dist目录没有打包后的代码，因为都在内存中。原因就在于访问内存中的代码比访问文件系统中的文件更快，而且也减少了代码写入文件的开销，这一切都归功于memory-fs
+  + 浏览器接收到热更新的通知
+    - 我们已经监听到文件的变化了，当文件发生变化时，就会触发重新编译。同时还监听了每次编译结束的事情。当监听到一次webpack编译结束，_sendStats方法就通过websoket给浏览器发送通知，检查下是否需要热更新。
+  + HotModuleReplacementPlugin
+  + module.hot.check开始热更新
+    - 利用上一次保存的hash值，调用hotDownloadManifest发送xxx/hash.hot-update.json的ajax请求
+    - 请求结果获取热更新模块，以及下次热更新的Hash标识，并进入热更新准备阶段
+    - 调用hotDownloadUpdateChunk发送xxx/hash.hot-update.js请求，通过JSONP方式
+      + hotAddUpdateChunk方法会把更新的模块moreModules赋值给全局变量hotUpdate
+      + hotUpdateDownloaded方法会调用hotApply进行代码的替换
+  + hotApply热更新的模块替换
+    - 删除过期的模块，就是需要替换的模块。通过hotUpdate可以找到旧模块
+    - 将新的模块添加到modules中
+    - 通过__webpack_require__执行相关模块的代码
+
+### 9、插件总结归类
 * 功能类
   + html-webpack-plugin 自动生成html
     ```js
