@@ -201,3 +201,163 @@ DOM事件流分为三个阶段，一个是捕获阶段，一个是处于目标�
 * 子类可以直接通过__proto__找到父类，而ES5是指向Function.prototype
 * ES5的继承，实质是先创造子类的实例对象this，然后再执行父类的构造函数给它添加实例方法和属性(不执行也无所谓)；ES6，实质是先创建父类的实例对象this(当然它的__proto__指向的是子类的prototype)，然后再用子类的构造函数修改this
 * class不存在变量提升，所以父类必须在子类之前定义
+
+### 13、装箱和拆箱
+* 装箱：把基本数据类型转换为对应的引用数据类型的操作
+```js
+  const s1 = 'Sunshine_lin'
+  const index = s1.indexOf('_')
+```
+原来是js内部进行了装箱操作：
+  + 创建String类型的一个实例
+  + 在实例上调用指定的方法
+  + 销毁这个实例
+* 拆箱：将引用数据类型转换为对应的基本类型的操作  
+通过valueOf或者toString方法实现拆箱操作
+
+### 14、继承方式有几种
+```js
+  // 前置工作
+  // 定义一个动物类
+  function Animal (name) {
+    // 属性
+    this.name = name || 'Animal'
+    // 实例方法
+    this.sleep = function(){
+      console.log(this.name + '正在睡觉！')
+    }
+  }
+  // 原型方法
+  Animal.prototype.eat = function(food) {
+    console.log(this.name + '正在吃：' + food)
+  }
+```
+* 原型链继承(将父类的实例作为子类的原型)
+  ```js
+    function Cat (){ }
+    Cat.prototype = new Animal()
+    Cat.prototype.name = 'cat'
+
+    const cat = new Cat('cat')
+    console.log(cat.name) // cat
+    cat.eat('fish') // cat正在吃：fish
+    cat.sleep() // cat正在睡觉
+    console.log(cat instanceof Animal) // true
+    console.log(cat instanceof Cat) // true
+  ```
+  + 优点：
+    - 非常纯粹的继承关系，实例是子类的实例，也是父类的实例
+    - 父类新增原型方法/属性，子类都能访问到
+    - 简单，易于实现
+  + 缺点：
+    - 要想为子类新增属性和方法，必须要在new Animal()这样的语句之后执行，不能放到构造器中
+    - 来自原型对象的所有属性被所有实例共享
+    - 创建子实例时，无法向父类构造函数传参
+    - 不支持多继承
+* 构造继承(使用父类的构造器来增强子类实例，等于是复制父类的属性给子类。没用到原型)
+  ```js
+    function Cat(name) {
+      Animal.call(this)
+      this.name = name || 'Tom'
+    }
+
+    var cat = new Cat()
+    console.log(cat.name) // Tom
+    cat.sleep() // Tom正在睡觉！
+    console.log(cat instanceof Animal) // false
+    console.log(cat instanceof Cat) // true
+  ```
+  + 优点：
+    - 解决了原型链继承中，子类实例共享父类引用属性的问题
+    - 创建子类实例时，可以向父类传递参数
+    - 可以实现多继承(call多个父类对象)缺点
+  + 缺点：
+    - 实例并不是父类的实例，只是子类的实例
+    - 是能继承父类的实例属性和方法，不能继承原型属性、方法
+    - 无法实现函数复用，每个子类都有父类实例函数的副本，影响性能
+* 实例继承(为父类实例添加新特性，作为子类实例返回)
+  ```js
+    function Cat(name) {
+      const instance = new Animal()
+      instance.name = name || 'Tom'
+      return instance
+    }
+
+    var cat = new Cat()
+    console.log(cat.name) // Tom
+    cat.sleep() // Tom正在睡觉！
+    console.log(cat instanceof Animal) // true
+    console.log(cat instanceof Cat) // false
+  ```
+  + 优点：
+    - 不限制调用的方式，不管是new 子类()还是子类()，返回的对象具有相同的效果
+  + 缺点：
+    - 实例是父类的实例，不是子类的实例
+    - 不支持多继承
+* 拷贝继承(一个一个属性拷贝)
+  ```js
+    function Cat(name) {
+      const animal = new Animal()
+      for (let k of animal) {
+        Cat.prototype[k] = animal[k]
+      }
+      this.name = name || 'Tom'
+    }
+
+    var cat = new Cat()
+    console.log(cat.name) // Tom
+    cat.sleep() // Tom正在睡觉！
+    console.log(cat instanceof Animal) // false
+    console.log(cat instanceof Cat) // true
+  ```
+  + 优点：
+    - 支持多继承
+  + 缺点：
+    - 效率低，内存占用高(因为要拷贝父类的属性)
+    - 无法获取父类不可枚举方法(不可枚举方法，不能用for in访问到)
+* 组合继承(通过父类构造，继承父类的属性并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用)
+  ```js
+    function Cat(name) {
+      Animal.call(this)
+      this.name = name || 'Tom'
+    }
+
+    Cat.prototype = new Animal()
+    Cat.prototype.constructor = Cat
+
+    var cat = new Cat()
+    console.log(cat.name) // Tom
+    cat.sleep() // Tom正在睡觉！
+    console.log(cat instanceof Animal) // true
+    console.log(cat instanceof Cat) // true
+  ```
+  + 优点：
+    - 弥补了构造继承的缺陷，可以继承实例属性/方法，也可以继承原型属性/方法
+    - 即使子类的实例，也是父类的实例
+    - 不存在引用属性共享问题
+    - 可传参
+    - 函数可复用
+  + 缺点：
+    - 调用了两次父类构造函数，生成了两份实例(子类实例将子类原型上的那份屏蔽了)
+* 寄生组合继承(通过寄生方式，砍掉父类的实例属性。这样，在调用两次父类的构造时，就不会初始化两次实例方法/属性，避免继承组合的缺点)
+  ```js
+    function Cat(name) {
+      Animal.call(this)
+      this.name = name || 'Tom'
+    }
+
+    // 创建一个没有实例方法的类
+    const Super = function () {}
+    Super.prototype = Animal.prototype
+    Cat.prototype = new Super()
+
+    var cat = new Cat()
+    console.log(cat.name) // Tom
+    cat.sleep() // Tom正在睡觉！
+    console.log(cat instanceof Animal) // true
+    console.log(cat instanceof Cat) // true
+  ```
+  + 优点：
+    - 堪称完美
+  + 缺点：
+    - 实现复杂
