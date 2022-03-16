@@ -65,7 +65,7 @@
   * setImmediate
   * UI rendering
 * 微任务,可以理解是在当前"执行栈"中的任务执行结束后立即执行的任务。而且早于页面渲染和取任务队列中的任务。微任务包括：
-  * Promise.then
+  * Promise.then/catch/finally/any
   * Object.observe
   * MutationObserver(监视对DOM树所做更改的能力)  
     MutationObserver是H5新增的属性，用于监听DOM修改时间，能够监听到节点的属性、文本内容、子节点等的改动，是一个功能强大的利器
@@ -215,7 +215,12 @@ DOM事件流分为三个阶段，一个是捕获阶段，一个是处于目标�
 * 拆箱：将引用数据类型转换为对应的基本类型的操作  
 通过valueOf或者toString方法实现拆箱操作
 
-### 14、继承方式有几种
+### 14、延迟加载脚本文件的方法
++ `<script async src="main.js"></script>`：给script标签添加async属性，则加载和渲染后续文档元素的过程将和`main.js`的加载与执行并行进行(异步)
++ `<script defer src="main.js"></script>`：给script标签添加defer属性，加载后续文档元素的过程将和`main.js`的加载并行进行(异步)，但是`main.js`的执行要在所有元素解析完成之后，`DOMContentLoaded`事件触发之前完成
++ 动态创建script标签：等到`DOMConentLoaded`事件触发时，生成一个script标签，渲染到页面上
++ setTimeOut延时器延迟代码执行
+### 15、继承方式有几种
 ```js
   // 前置工作
   // 定义一个动物类
@@ -361,3 +366,30 @@ DOM事件流分为三个阶段，一个是捕获阶段，一个是处于目标�
     - 堪称完美
   + 缺点：
     - 实现复杂
+
+### 16、鼠标事件的各个坐标
+  | 属性    |  说明                         |  兼容性            |
+  | ---     | ---                          | ---               |
+  | offsetX | 当前元素左上角为原点，定位x轴坐标 | 除了Mozilla外都兼容 |
+  | offsetY | 当前元素左上角为原点，定位y轴坐标 | 除了Mozilla外都兼容 |
+  | clientX | 以浏览器可视窗口左上角为原点，定位x轴坐标 | 都兼容 |
+  | clientY | 以浏览器可视窗口左上角为原点，定位y轴坐标 | 都兼容 |
+  | pageX | 以document左上角为原点，定位x轴坐标 | 除IE外都兼容 |
+  | pageY | 以document左上角为原点，定位y轴坐标 | 除IE外都兼容 |
+  | screenX | 以计算机屏幕左上角为原点，定位x轴坐标 | 都兼容 |
+  | screenY | 以计算机屏幕左上角为原点，定位y轴坐标 | 都兼容 |
+  | layerX | 最近的绝对定位的父元素左上角为原点，定位x轴坐标 | Mozilla和Safari |
+  | layerY | 最近的绝对定位的父元素左上角为原点，定位y轴坐标 | Mozilla和Safari |
+
+### 17、节点视图的各个尺寸
+  | 属性        |  说明                              |
+  | ---        | ---                                |
+  | offsetLeft | 获取当前元素到定位父节点的left方向的距离 |
+  | offsetTop   | 获取当前元素到定位父节点的top方向的距离  |
+  | offsetWidth | 获取当前元素width + 左右padding + 左右border-width  |
+  | offsetHeight | 获取当前元素height + 上下padding + 上下border-width  |
+  | clientWidth | 获取当前元素width + 左右padding |
+  | clientHeight | 获取当前元素height + 上下padding |
+  | scrollWidth | 获取当前元素真实的宽度，内容不超出盒子宽度时为盒子的clientWidth |
+  | scrollHeight | 获取当前元素真实的高度，内容不超出盒子宽度时为盒子的clientHeigth |
+
