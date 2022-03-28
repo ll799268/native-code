@@ -4,11 +4,9 @@
  */
 class Event {
   constructor() {
-
+    // 首先定义一个事件容器，用来装事件数组（因为订阅者可以是多个）
+    this.handlers = {}
   }
-
-  // 首先定义一个事件容器，用来装事件数组（因为订阅者可以是多个）
-  handlers = {}
 
   // 事件添加方法，参数有事件名和事件方法
   addEventListener(type, handler) {
