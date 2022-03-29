@@ -112,13 +112,15 @@
   + 比起在模板层面管理相关逻辑，更好的办法是通过创建计算属性筛选出列表，并以此创建可见元素
 
 ### 8、methods、computed和watch的区别和运用的场景
-* 区别：
-  methods：内部用来定义函数，需要手动调用。而不像computed和watch那样，自动执行预先定义的函数
-  computed：计算属性，依赖 data 属性值，有缓存的。只有他的依赖属性值发生改变，下一次获取的值会重新计算。一个数据受多个数据影响
+* 区别：  
+  methods：内部用来定义函数，需要手动调用。而不像computed和watch那样，自动执行预先定义的函数  
+  computed：计算属性，依赖 data 属性值，有缓存的。只有他的依赖属性值发生改变，下一次获取的值会重新计算。一个数据受多个数据影响  
   watch：观察作用，类似于某些数据的监听回调，每当监听的数据发生改变会执行后续操作。一个数据影响多个数据
 * 运用场景：
-  computed：当我们需要进行数值计算，并且依赖于其他数据时，应该使用computed 因为可以利用缓存机制，避免每次获取值时，都需要重新计算
-  watch：当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它。使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。
+  computed：当我们需要进行数值计算，并且依赖于其他数据时，应该使用computed 因为可以利用缓存机制，避免每次获取值时，都需要重新计算  
+  watch：当我们需要数据变化时执行异步或者开销较大的操作时候，应该使用它。使用它选项允许我们执行异步操作，限制我们执行该操作的频率，并在我们得到最终结果前，设置中间状态。  
+  computed的多对一，watch一对多
+
 
 ### 9、keep-alive
 * props：
@@ -247,48 +249,60 @@ key 是给每一个 vnode 的唯一 id，也是diff的一种优化策略，可�
   * 如果使用了 key, Vue 会根据 key 的顺序记录 element, 曾经拥有了 key 的 element 如果不再出现的话，会被直接 remove 或者 destoryed
 
 ### 17、diff算法
-+ 概念特点：
+* 概念特点：
   + diff 算法是一种通过同层的树节点进行比较的高级算法
   + 比较只会在同层进行，不会跨层级比较
   + 在diff比较过程中 循环从两边向中间比较
   + diff 算法在很多场景都有使用，在 vue 中，作用域虚拟 dom 渲染成真实的 dom 的新旧 VNode 节点比较
-+ 比较方式
+* 比较方式  
   diff 整体策略：深度优先，同层比较
-  * 比较会在同层级进行，不会跨层级比较
-  * 比较过程中，循环从两边向中间收拢
+  + 比较会在同层级进行，不会跨层级比较
+  + 比较过程中，循环从两边向中间收拢
+* 比较步骤
+  + 调用`patch`方法，传入新旧虚拟DOM，开始同层对比
+  + 调用`isSameNode`方法，对比新旧节点是否同类型节点
+  + 如果不同，新节点直接代替旧节点
+  + 如果相同，调用`patchNode`进行对比文件
+    - 如果旧节点和新节点都是文本节点，则新文本代替旧文本
+    - 如果旧节点有子节点，新节点没，则删除旧节点的子节点
+    - 如果旧节点没有子节点，新节点有，则把子节点新增上去
+    - 如果都有子节点，则调用`updateChildren`方法进行新旧子节点的对比
+    - 子节点对比为首尾对比法
+
 
 ### 18、vue-router
-+ 路由守卫钩子
-  * 全局守卫
-    + beforeEach(to, from, next)
-    + afterEach(to, from, next)
-  * 局部守卫
-    + beforeRouteEnter(to, from, next)
-    + beforeRouteUpdate(to, from, next)
-    + beforeRouteLeave(to, from, next)
-+ 路由原理
-  * hash模式（hashchange）
-    + url 改变的时候 会触发 hashchange 事件
-  * history模式（popstate）
-    + 通过浏览器前进后退改变 URL 时会触发 popstate 事件
-    + 通过pushState、replaceState、`<a>`标签改变 URL 不会触发 popstate 事件。
-    + 好在我们可以拦截 pushState、replaceState的调用和`<a>`标签的点击事件来检测 URL 变化
-    + 通过js 调用history的back，go，forward方法课触发该事件
+* 路由守卫钩子
+  + 全局守卫
+    - beforeEach(to, from, next)
+    - afterEach(to, from, next)
+  + 局部守卫
+    - beforeRouteEnter(to, from, next)
+    - beforeRouteUpdate(to, from, next)
+    - beforeRouteLeave(to, from, next)
+* 路由原理
+  + hash模式（hashchange）
+    - url 改变的时候 会触发 hashchange 事件
+  + history模式（popstate）
+    - 通过浏览器前进后退改变 URL 时会触发 popstate 事件
+    - 通过pushState、replaceState、`<a>`标签改变 URL 不会触发 popstate 事件。
+    - 好在我们可以拦截 pushState、replaceState的调用和`<a>`标签的点击事件来检测 URL 变化
+    - 通过js 调用history的back，go，forward方法课触发该事件
+  + abstract：适用于Node
 
 ### 19、vuex
-+ 概念
-  * vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
-+ 核心概念
+* 概念
+  + vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
+* 核心概念
   五大属性：state, getter, mutation, action, module
-    * state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
-    * getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
-    * mutation: 更改 state 中的唯一方法
-    * action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
-    * module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
-+ 流程
+    + state: 存储数据、状态，在根实例注册了store, 用 this.$store.state 来访问
+    + getter: 计算状态属性，返回值会被缓存起来，当它的依赖发生变化会重新计算
+    + mutation: 更改 state 中的唯一方法
+    + action: 包含任意的异步操作，提交 mutation 改变状态，而不是直接改变状态
+    + module: 将 store 分割成模块，每个模块都有state、getter、mutation、action 甚至是嵌套子模块
+* 流程
     dispath    commit
 action => mutation => state
-+ 持久化工具
+* 持久化工具
   vuex-persistedstate
 
 ### 20、Vue项目的优化（代码层面的优化）
@@ -342,3 +356,5 @@ data之所以只一个函数，是因为一个组件可能会多处调用，而�
   + .lazy：输入框失去焦点才会更新vmodel的值
   + .number：将vmodel的值转换为数字
   + .trim：将vmodel的值首尾空格去掉
+
+### 26、
