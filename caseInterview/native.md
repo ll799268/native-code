@@ -189,11 +189,11 @@ Set 是一种叫做集合的数据结构，Map 是一种叫做字典的数据结
    - 非 [^regex] 和 !
    - 或 |
 
-### 11、事件流
-事件流分为两种，捕获事件流和冒泡事件流
+### 11、事件流  
+事件流分为两种，捕获事件流和冒泡事件流  
   * 捕获事件流从根节点开始执行，一直往子节点查找执行，直到查找执行到目标节点
   * 冒泡事件流从目标节点开始执行，一直往父节点冒泡查找执行，直到查到根节点
-DOM事件流分为三个阶段，一个是捕获阶段，一个是处于目标节点节点，一个是冒泡阶段
+DOM事件流分为三个阶段，一个是捕获阶段，一个是处于目标节点节点，一个是冒泡阶段  
 
 ### 12、ES5的new实例和ES6的class的new实例有什么区别
 * ES5里的构造函数就是一个普通函数，可以使用new调用也可以直接调用
@@ -216,10 +216,18 @@ DOM事件流分为三个阶段，一个是捕获阶段，一个是处于目标�
 通过valueOf或者toString方法实现拆箱操作
 
 ### 14、延迟加载脚本文件的方法
-+ `<script async src="main.js"></script>`：给script标签添加async属性，则加载和渲染后续文档元素的过程将和`main.js`的加载与执行并行进行(异步)
-+ `<script defer src="main.js"></script>`：给script标签添加defer属性，加载后续文档元素的过程将和`main.js`的加载并行进行(异步)，但是`main.js`的执行要在所有元素解析完成之后，`DOMContentLoaded`事件触发之前完成
-+ 动态创建script标签：等到`DOMConentLoaded`事件触发时，生成一个script标签，渲染到页面上
-+ setTimeOut延时器延迟代码执行
+* async 脚本文件一旦加载完成，会立即执行
+  + 经典脚本：经典脚本在资源可用后会立刻解析并执行
+  + 模块脚本：模块脚本会使得资源和他们的依赖放入延迟队列中，在资源可用后会立刻解析并且执行
+* defer 脚本文件会在DOM解析完成后，DOMContentLoad事件之前执行
+  + defer 节本会阻止DOMContentLoad事件发生，知道这个脚本加载并且执行完毕
+  + defer 必须设置在有src的script
+  + module script 是默认defer的
+  + defer脚本会按照执行顺序执行
+* `<script async src="main.js"></script>`：给script标签添加async属性，则加载和渲染后续文档元素的过程将和`main.js`的加载与执行并行进行(异步)
+* `<script defer src="main.js"></script>`：给script标签添加defer属性，加载后续文档元素的过程将和`main.js`的加载并行进行(异步)，但是`main.js`的执行要在所有元素解析完成之后，`DOMContentLoaded`事件触发之前完成
+* 动态创建script标签：等到`DOMConentLoaded`事件触发时，生成一个script标签，渲染到页面上
+* setTimeOut延时器延迟代码执行
 ### 15、继承方式有几种
 ```js
   // 前置工作
