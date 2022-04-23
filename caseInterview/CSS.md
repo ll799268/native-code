@@ -57,3 +57,64 @@
   + flex-basis：定义在分配多余空间之前，项目占据的主轴空间，浏览器根据此属性计算主轴是否有多余空间
     - 默认值为auto，即项原本大小
     - 设置后项目将占据固定空间
+
+### 6、移动端1px问题
+* 使用伪元素
+  ```scss
+    .one-border {
+      position: relative;
+      &::after{
+        position: absolute;
+        content: ' ';
+        background-color: red;
+        width: 100%;
+        height: 1px;
+        transform: scaleY(0.5);
+        top: 0;
+        left: 0;
+      }
+    }
+
+    .four-border {
+      position: relative;
+      &::after{
+        content: ' ';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        transform: scale(0.5);
+        transform-origin: left top;
+        box-sizing: border-box;
+        border: 1px solid red;
+        border-radius: 4px;
+      }
+    }
+  ```
+  + 优点：全机兼容，真正实现了1px问题，而且可以实现圆角
+  + 缺点：暂用伪类，可能影响浮动
+* 使用viewport的scale值
+```js
+var viewport = document.querySelector('meta[name=viewport]')
+if (window.devicePixelRatio == 1) {
+  viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no')
+}
+if (window.devicePixelRatio == 2) {
+  viewport.setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no')
+}
+if (window.devicePixelRatio == 3) {
+  viewport.setAttribute('content', 'width=device-width, initial-scale=0.3333333333333333, maximum-scale=0.3333333333333333, minimum-scale=0.3333333333333333, user-scalable=no')
+}
+var docEl = document.documentElement;
+var fontsize = 32 * (docEl.clientWidth / 750) + 'px'
+docEl.style.fontSize = fontsize
+```
+  + 优点：全机型兼容，直接写1px不能再方便
+  + 缺点：适用于新的项目，老项目可能改动大
+* 使用边框图片
+  + 优点：没有副作用
+  + 缺点：圆角比较模糊
+* 使用box-shadow
+  + 优点：使用简单，圆角也可以实现
+  + 缺点：模拟方法的实现，仔细看可以看出阴影不是边框
