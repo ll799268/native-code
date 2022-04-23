@@ -42,7 +42,6 @@
 * `nth-of-type(n)`是选择父元素的第n个同类型的子元素
 * `nth-child(n)`是选择父元素的第n个子元素
 
-
 ### 5、flex布局
 * flex：1 0 auto 默认参数
   + flex-grow：定义项的放大比例
@@ -118,3 +117,77 @@ docEl.style.fontSize = fontsize
 * 使用box-shadow
   + 优点：使用简单，圆角也可以实现
   + 缺点：模拟方法的实现，仔细看可以看出阴影不是边框
+
+### 7、两栏布局
+* flex
+  ```css
+    .parent {
+      display: flex;
+    }
+    .left {
+      width: 100px;
+    }
+    .right {
+      flex: 1;
+    }
+  ```
+  缺点：出现等列高的情况。flex容器的一个默认属性值：`align-items：stretch`
+* 父overflow + float + padding/margin-left
+  ```css
+    .parent {
+      overflow: hidden;
+    }
+    .left {
+      width: 100px;
+      float: left;
+    }
+    .right {
+      margin/padding-left: 100px;
+    }
+  ```
+* 左float + 右触发BFC保持流体特性
+  ```css
+    .left {
+      width: 100px;
+      float: left;
+    }
+    .right {
+      overflow: hidden;
+    }
+  ```
+* inline-block + font-size + calc
+  ```css
+    .parent {
+      width: 100%;
+      font-size: 0;
+    }
+    .left {
+      display: inline-block;
+      width: 100px;
+      font-size: 14px;
+    }
+    .right {
+      display: inline-block;
+      width: calc(100% - 100px);
+      font-size: 14px;
+    }
+  ```
+* absolute + right值为0
+  ```css
+    .parent {
+      position: relative;
+      overflow: hidden;
+    }
+    .left {
+      width: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .right {
+      position: absolute;
+      top: 0;
+      left: 100px;
+      right: 0
+    }
+  ```
