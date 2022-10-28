@@ -16,16 +16,16 @@ Element和NodeList
   - 属性  
     attributes、classList、className、clientHeight、clientWeight、clientTop、clientLeft、id、innerHTML、localHTML、outerHTML、scrollTop、scrollWeight、scrollHeight
   - 方法  
-    addEventListener、getAttribute、getAttribute、toggleAttribute、getAttributeNames、getBoundingClientRect、getElementsByClassName、getElementByTagName、hasAttributes、insertAdjacentElement、querySelector、querySelectorAll、removeAttribute、removeEventListener、scroll、scrollBy、scrollTo
+    addEventListener、getAttribute、setAttribute、toggleAttribute、getAttributeNames、getBoundingClientRect、getElementsByClassName、getElementByTagName、hasAttributes、insertAdjacentElement、querySelector、querySelectorAll、removeAttribute、removeEventListener、scroll、scrollBy、scrollTo
     + toggleAttribute(name, [,force]) 切换给定元素属性的布尔值的状态，如果存在就添加、不存在就移除
     + insertAdjacentElement(position, element)
       position的值有beforebegin(在该元素之前)、afterbegin(只在该元素当中，第一个子节点之前)、beforeend(只在该元素当中，最后一个孩子之后)、afterend(在该元素之后)
   - 事件 可以使用addEventListener 添加事件  
-    error、scroll、select、show、cut、whell、copy、paste、compositioned、compositionstart、compositionupdate、blur、focus、focusin、focusout、fullscreenchange、fullscreenerror、keydown、keypress、keyup、auxclick、click、contnentmenu、dbclick、mousedown、mouseenter、mouseleave、mousemove、mouseout、mouseover、mouseup、touchcancel、touchstart、touchmove、touchend
+    error、scroll、select、show、cut、whell、copy、paste、compositioned、compositionstart、compositionupdate、blur、focus、focusin、focusout、fullscreenchange、fullscreenerror、keydown、keypress、keyup、auxclick、click、contextmenu、dbclick、mousedown、mouseenter、mouseleave、mousemove、mouseout、mouseover、mouseup、touchcancel、touchstart、touchmove、touchend
 + NodeList
   - NodeList对象是一个nodes集合
   - 可以通过Node.childNodes和documentSelectorAll()返回
-  - NodeList虽然不是叔叔但是有forEach方法可以迭代
+  - NodeList虽然不是数组但是有forEach方法可以迭代
   - 可以通过Array.from()将NodeList转换为一个真实的数组
 区别：
   - 可以把Element理解为一个Node，因为Element继承了Node Interface
