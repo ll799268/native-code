@@ -56,6 +56,14 @@
         + Redux在检测数据变化时候，是通过diff的方式比较差异的，而Vuex其实和Vue的原理一样，是通过getter/setter来比较的
 
 ### 2、Vue2和Vue3的区别
+  * 性能提升
+    Vue3通过重写虚拟DOM的实现方式，使得渲染性能提升了好多。同时，Vue3还对组件的初始化和更新过程进行了优化，提还说呢过了整体的性能表现
+  * Composition Api
+    Vue3引入了Composition Api，让开发者可以更方便地组织组件内部的逻辑。相对于Vue2的Options API，Composition Api更加灵活、可读性更高
+  * Typescript支持
+    Vue3对Typescript的支持更加友好，提供了更多的类型定义和类型推断功能
+  * 新的API
+    Vue3引入了很多新的API，例如`Teleport`、`Suspense`等，为开发者提供了更多的组件化方案
   * 挂载方式
     + Vue3可以通过结构的方式拿到`createApp`方法，通过该方法得到app调用`mount`进行挂载。这也是Vue3函数式编程的设计理念，这种设计方式可以按需引用资源，更好的利用tree-shaking(摇树：描述移除js上下文的未引用代码)来减少打包体积
     + Vue2是通过`new Vue`创建实例，通过参数el确定挂载的dom进行挂载，也可以不传el直接使用`app.$mount('#app')`
@@ -70,3 +78,5 @@
       - ref定义的变量通过`xx.value = x` 改变，reactive定义的变量通过`Obj.xx = x` 
     + Vue2直接将数据放到了data中，通过`this.xx = x`来改变
     针对数据响应式原理两者变化很大，vue2是利用`object.defineProperty`，vue3是利用`Proxy和Reflect`来实现，最大的优势就是vue3可以监听到数组、对象新增/删除或多层嵌套数据结构的响应
+
+### 3、
