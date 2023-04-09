@@ -40,7 +40,8 @@
 + `useReducer hook`
   * 用以管理组件的状态，可以使组件更加灵活和易于维护
 
-+ `useCallback hook`：用于缓存函数，可以提高组件的性能表现
++ `useCallback hook`：
+  * 用于缓存函数，可以提高组件的性能表现
 
 ### 2、memo、useCallback、useMemo
 * memo

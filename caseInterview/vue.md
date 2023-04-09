@@ -309,6 +309,8 @@ action => mutation => state
 * v-if 和 v-show 区分使用场景
 * computed 和 watch 区分使用场景
 * v-for 遍历必须为 item 添加 key，同时避免使用 v-if
+* 使用keep-alive缓存组件
+* 使用异步组件
 * 长列表的性能优化
 * 事件的销毁
 * 图片资源懒加载
@@ -356,5 +358,3 @@ data之所以只一个函数，是因为一个组件可能会多处调用，而�
   + .lazy：输入框失去焦点才会更新vmodel的值
   + .number：将vmodel的值转换为数字
   + .trim：将vmodel的值首尾空格去掉
-
-### 26、
