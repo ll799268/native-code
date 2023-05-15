@@ -1,7 +1,7 @@
 
 export default {
   server: {
-    open: '/index.html',
+    open: true,
     host: '0.0.0.0',
   },
   cssPreprocessOptions: {
