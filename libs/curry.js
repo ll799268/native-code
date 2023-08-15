@@ -1,12 +1,23 @@
+
+/**
+ * 函数柯里化
+ * @param {Function} fn 执行函数
+ * @param {Array} arg 参数
+ * @returns 
+ */
 const curry = (fn, arg = []) => {
-  return () => {
-    const newArg = [...arg, arguments]
-    newArg.length < fn.length ? fn.apply(this, newArg) :  curry.call(this, fn, newArg)
+  const _this = this;
+  return function () {
+    const newArgs = [...arg, ...arguments];
+    if (fn.length > newArgs.length) {
+      return curry.call(_this, fn, newArgs);
+    }
+    return fn.apply(_this, newArgs);
   }
 }
 
-const add = arr => arr.reduce((prev, cur) => prev + cur, 0)
+const sum = curry((a, b, c) => a + b + c)
 
-const sum = add([1, 2, 3])
-
-console.log(sum);
+console.log(sum(1, 2, 3));
+console.log(sum(1, 2)(3));
+console.log(sum(1)(2)(3));
