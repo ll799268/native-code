@@ -6,7 +6,7 @@ export default {
   },
   cssPreprocessOptions: {
     scss: {
-      additionalData: '@import "./src/css/waterfallFlow.scss";' // 添加公共样式
+      additionalData: '@import "./src/css/waterfall-flow.scss";' // 添加公共样式
     }
   }
 }
