@@ -1,10 +1,12 @@
-## vite篇
+# vite篇
 
-### 1、概括
+## 1、概括
+
 * 主要对应的场景是开发模式，原理是拦截浏览器发出的ES imports请求并做相应处理(生产模式对应的是Rollup打包)
 * Vite在开发模式下不需要打包，只需要编译浏览器发出的HTTP请求对应的文件既可。所以热更新的很快
 
-### 2、vite和webpack的区别
+## 2、vite和webpack的区别
+
 * 打包方式不同：vite是一种基于ES Modules的打包方式，可以快速地构建开发环境，而webpack是一种基于CommonJS的打包方式，构建速度相对较慢
 * 热更新的方式不同：vite使用了浏览器院女生的ES Modules 特性，可以实现更加快速的热更新，而webpack则需要借助插件来实现热更新
 * 代码分割方式不同：vite可以通过`import()`方式来实现代码分割，而webpack则需要使用动态`import`或者`require.ensure`来实现代码分割

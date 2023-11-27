@@ -1,7 +1,9 @@
-## Vue、React 语法差异
+# Vue、React 语法差异
 
-### 1、DOM是否真实的渲染
+## 1、DOM是否真实的渲染
+
 * Vue
+
   ```js
     <template>
       <p v-if="isShow">我真正被渲染出来了</p>
@@ -16,7 +18,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     import { useState } from 'react'
     const [isShow, setIsShow] = useState(true)
@@ -26,8 +30,10 @@
     )
   ```
 
-### 2、DOM通过样式控制显示隐藏
+## 2、DOM通过样式控制显示隐藏
+
 * Vue
+
   ```js
     <template>
       <p v-show="isShow">我显示出来了</p>
@@ -42,7 +48,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     import { useState } from 'react'
     const [isShow, setIsShow] = useState(true)
@@ -52,8 +60,10 @@
     )
   ```
 
-### 3、循环列表
+## 3、循环列表
+
 * Vue
+
 ```js
   <template>
     <ul>
@@ -78,7 +88,9 @@
     }
   </script>
 ```
+
 * React
+
 ```js
   import { useState } from 'react'
   const [list, setList] = useState([
@@ -101,8 +113,10 @@
   )
 ```
 
-### 4、计算属性(带缓存)
+## 4、计算属性(带缓存)
+
 * Vue
+
   ```js
     <template>
       <p>{{ name }}</p>
@@ -120,7 +134,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     import { useState, useMemo } from 'react'
     const [nativeName, setNativeName] = useState('张')
@@ -135,8 +151,10 @@
 
   ```
 
-### 5、监听数据变化
+## 5、监听数据变化
+
 * Vue
+
   ```js
     <template>
       <p>{{ nativeName }}</p>
@@ -154,7 +172,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     import { useState, useEffect } from 'react'
 
@@ -174,8 +194,10 @@
     )
   ```
 
-### 6、行内样式
+## 6、行内样式
+
 * Vue
+
   ```js
     <template>
       <p :style="[style1, style2]">{{ nativeName }}</p>
@@ -195,7 +217,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     const style1 = {
       color: 'red'
@@ -209,8 +233,10 @@
     )
   ```
 
-### 6、添加class
+## 6、添加class
+
 * Vue
+
   ```js
     <template>
       <p :class="['title', isActive ? 'active' : '']"></p>
@@ -225,7 +251,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     import { useState } from 'react'
     const [isActive, setIsActive] = useState(false)
@@ -234,8 +262,10 @@
     )
   ```
 
-### 7、slot
+## 7、slot
+
 * Vue
+
   ```js
     // Parent.vue
     <template>
@@ -258,7 +288,9 @@
       }
     </script>
   ```
+
 * React
+
   ```js
     // Parent.jsx
     const Parent = props => {
