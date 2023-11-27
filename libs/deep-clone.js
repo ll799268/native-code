@@ -22,10 +22,12 @@ function deepClone(origin, target) {
   return tar
 }
 
+// 第一层是深拷贝,其余层都是浅拷贝
+// const newObject = Object.assign({}, object)
+
 // 深拷贝(有些引用类型不生效)
 // const newArr = JSON.parse(JSON.stringify(arr))
-// const newArr = arr.splice(0)
-// const newArr = Object.create(arr)
+// const newArr = arr.slice(0)
 
 // 浅拷贝
-// const newObject = Object.assign({}, object)
+// const newArr = Object.create(arr)
