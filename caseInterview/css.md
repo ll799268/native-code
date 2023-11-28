@@ -212,3 +212,62 @@ docEl.style.fontSize = fontsize
       right: 0
     }
   ```
+
+## 7、CSS方法论
+
+* OOCSS
+  * 结构与皮肤分离，即不要将位置、尺寸等结构属性和字体、颜色等皮肤属性写在一个选择器中
+
+  ```html
+    <style>
+      .line {
+        background-color: #ccc;
+      }
+
+      .col {
+        width: 100px;
+        float: left;
+      }
+    </style>
+    <div class="line col"></div>
+  ```
+  
+  * 内容与容器分离，即让对象的行为可预测，避免对位置的依赖，子元素即使离开了容器也应该能正确显示
+
+  ```html
+    <style>
+     .line {
+        background-color: #ccc;
+      }
+
+     .unit {
+        width: 50%;
+      }
+    </style>
+    <div class="line">
+      <div class="unit"></div>
+    </div>
+  ```
+
+  缺点:
+  * 虽然样式的粒度变小了，但同时会产生许多充满类的HTML元素
+  * 在避免特殊性冲突时，OOCSS选择的方案是放弃层叠，这样就无法最大程度地利用关系选择器的优势
+  * 为了让类能更通用，在命名时就得弱化语义
+
+* BEM (Block Element Modifier)
+  * 块（Block）：一个独立的实体，比如一个按钮、一个表单域、一个模块等等。
+  * 元素（Element）：块的一部分，比如按钮中的文字、表单域中的输入框等等。
+  * 修饰符（Modifier）：用来描述一个元素的特殊状态，比如按钮的禁用状态、表单域的错误状态等等。  
+  
+  缺点:
+  * BEM与OOCSS一样，也抛弃了层叠，因此也不能完全挖掘出关系选择器的潜力
+  * CSS类名可能会比较长而且复杂
+  * 需要完善规则说明文档，否则HTML结构将难以阅读
+
+* SMACSS  
+SMACSS（Scalable and Modular Architecture for CSS）是指可伸缩及模块化的CSS架构，由Jonathan Snook在2011年雅虎工作时提出。他在OOCSS和BEM的基础上添加了五种类别的组件的处理规则，具体如下所列  
+  * 基准（Base）是指组件的基本样式，例如按钮的基本样式（背景色、边框等）、表单域的基本样式（背景色、边框等）
+  * 布局（Layout）是指组件的不同布局，例如按钮的不同布局（水平、垂直等）
+  * 模块（Module）是指组件的不同功能，例如按钮的不同功能（按钮、输入框、按钮组等）、表单域的不同功能（输入框、选择框等）
+  * 状态（State）是指组件的不同状态，例如按钮的不同状态（hover、active、focus等）、表单域的不同状态（error、success等）
+  * 主题（Theme）也就是换肤，描述了页面的外观，它可修改前面四个类别的样式，例如链接颜色、布局方式
