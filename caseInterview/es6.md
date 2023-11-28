@@ -65,9 +65,9 @@
   ```js
     const obj = {
       name, // 标识符
-      "age": age, // 字符串字面量
-      [name + "2"]: "freedom", // 要计算的表达式
-      [name + "3"]() {
+      'age': age, // 字符串字面量
+      [name + '2']: 'freedom', // 要计算的表达式
+      [name + '3']() {
         return name
       }
     }
