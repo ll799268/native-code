@@ -253,4 +253,73 @@ ES6将迭代器和生成器内置到语言中，不仅简化了数据处理和�
 
 ## 17、Promise
 
-## 18、代理和反射
+## 18、代理
+
+ES6引入代理（Proxy）地目的是拦截对象的内置操作，注入自定义的逻辑，改变对象的默认行为。也就是说，将某些JavaScript内部的操作暴露了出来，给予开发人员更多的权限。这其实是一种元编程（metaprogramming）的能力，即把代码看成数据，对代码进行编程，改变代码的行为
+
+* 陷阱  
+构造函数Proxy()有两个参数，其中target是要用代理封装的目标对象，handler也是一个对象，它的方法被称为陷阱（trap），用于指定拦截后的行为  
+
+| 陷阱 | 拦截 | 返回值 |
+| :--: | :--: | :--: |
+| get | 读取属性 | 任意值 |
+| set | 设置属性 | 布尔值 |
+| has | in运算符 | 布尔值 |
+| deleteProperty | delete运算符 | 布尔值 |
+| getOwnPropertyDescriptor | Object.getOwnPropertyDescriptor() | 属性描述符对象 |
+| defineProperty | Object.defineProperty() | 布尔值 |
+| preventExtensions | Object.preventExtensions() | 布尔值 |
+| isExtensible | Object.isExtensible() | 布尔值 |
+| getPrototypeOf | Object.getPrototypeOf()、`__proto__` ，Object.prototype.isPrototypeOf() instanceof | 对象 |
+| setPrototypeOf | Object.setPrototypeOf() | 布尔值 |
+| apply | Function.prototype.apply()、call() | 任意值 |
+| construct | new运算符作用于构造函数 | 对象 |
+| ownKeys | Object.getOwnPropertyNames()、Object.keys()、Object.getOwnPropertySymbols()、for in循环 | 数组 |
+
+* 撤销代理  
+Proxy.revocable()方法能够创建一个可撤销的代理，它能接收两个参数，其含义与构造函数Proxy()中的相同，但返回值是一个对象，包含两个属性，如下所列  
+1.proxy：新生成的Proxy实例  
+2.revoke：撤销函数，它没有参数，能把与它一起生成的Proxy实例撤销掉  
+
+## 19、反射
+
+反射（Reflect）向外界暴露了一些底层操作的默认行为，它是一个没有构造函数的内置对象，类似于Math对象，其所有方法都是静态的。代理中的每个陷阱都会对应一个同名的反射方法（例如Reflect.set()、Reflect.ownKeys()等），而每个反射方法又都会关联到对应代理所拦截的行为（例如in运算符、Object.defineProperty()等），这样就能保证某个操作的默认行为可随时被访问到。
+
+* 参数的检验更为严格，Object的getPrototypeOf()、isExtensible()等方法会将非对象的参数自动转换成相应的对象（例如字符串转换成String对象，如下代码所示），而关联的反射方法却不会这么做，它会直接抛出类型错误
+
+```js
+  Object.getPrototypeOf('ll') === String.prototype // true
+  Reflect.getPrototypeOf('ll') // 类型错误
+```
+
+* 更合理的返回值，Object.setPrototypeOf()会返回它的第一个参数，而Reflect的同名方法会返回一个布尔值，后者能更直观的反馈设置是否成功，两个方法的对比如下所示
+
+```js
+  const obj = {}
+  Object.setPrototypeOf(obj, String) === obj // true
+  Reflect.setPrototypeOf(obj, String) // true
+```
+
+* 用方法替代运算符，反射能以调用方法的形式完成`new、in、delete`等运算符的功能，在下面的示例中，先使用运算符，再给出对应的反射方法
+
+```js
+  function func() { }
+  new func()
+  Reflect.construct(func, [])
+
+  const people = {
+    name: 'll'
+  }
+  'll' in people
+  Reflect.has(people, 'll')
+
+  delete people['ll']
+  Reflect.deleteProperty(people, 'll')
+```
+
+* 避免冗长的方法调用，以apply()方法为例，如下所示
+
+```js
+  Function.prototype.apply.call(Math.ceil, null, [2.5])
+  Reflect.apply(Math.ceil, null, [2.5])
+```
