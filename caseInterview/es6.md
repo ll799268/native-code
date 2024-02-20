@@ -227,7 +227,7 @@ ES6将迭代器和生成器内置到语言中，不仅简化了数据处理和�
 ```
 
 * for-of  
-这是ES6新增的一种循环语句，当要遍历一个可迭代对象时，会先通过它的Symbol.iterator属性得到默认迭代器，再调用迭代器的next()方法，读取IteratorResult的value属性的值并赋给for-of语句中声明的变量，如此反复，直到done属性为ture时才终止遍历。而和其它循环语句一样，for-of循环也能通过跳转语句return、break和continue提前终止。
+这是ES6新增的一种循环语句，当要遍历一个可迭代对象时，会先通过它的Symbol.iterator属性得到默认迭代器，再调用迭代器的next()方法，读取IteratorResult的value属性的值并赋给for-of语句中声明的变量，如此反复，直到done属性为true时才终止遍历。而和其它循环语句一样，for-of循环也能通过跳转语句return、break和continue提前终止。
 
 * 字符串  
 字符串虽然是基础类型，但它能被隐式的封装成String对象，而String含有默认迭代器，因此可以进行for-of循环  
@@ -239,7 +239,7 @@ ES6将迭代器和生成器内置到语言中，不仅简化了数据处理和�
     console.log(str[i])
   }
 
-  // rigth
+  // right
   for (let value of str) {
     console.log(value)
   }
